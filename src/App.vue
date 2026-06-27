@@ -1,15 +1,33 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { useUserStore } from '@/stores/userStore'
+
+const userStore = useUserStore()
+
+onMounted(() => {
+  userStore.loadUser()
+})
+</script>
 
 <template>
-  <main class="app">
-    <h1>校园轻集市</h1>
-    <p>AI 辅助前端工程实践种子项目</p>
-    <RouterView />
-  </main>
+  <RouterView />
 </template>
 
-<style scoped>
-.app {
-  padding: 32px;
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f8fafc;
+  color: #1e293b;
+  line-height: 1.6;
+}
+
+#app {
+  min-height: 100vh;
 }
 </style>

@@ -1,0 +1,240 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "nickname": "小明同学",
+      "college": "计算机学院",
+      "campus": "东校区",
+      "role": "student",
+      "creditScore": 100,
+      "createdAt": "2024-01-15T10:00:00Z"
+    },
+    {
+      "id": "2",
+      "nickname": "李老师",
+      "college": "数学学院",
+      "campus": "西校区",
+      "role": "teacher",
+      "creditScore": 100,
+      "createdAt": "2024-02-20T14:30:00Z"
+    },
+    {
+      "id": "3",
+      "nickname": "张同学",
+      "college": "商学院",
+      "campus": "南校区",
+      "role": "student",
+      "creditScore": 95,
+      "createdAt": "2024-03-10T09:15:00Z"
+    }
+  ],
+  "infos": [
+    {
+      "id": "1",
+      "title": "全新MacBook Pro 14寸出售",
+      "description": "全新未拆封MacBook Pro 14寸，M3 Pro芯片，18GB内存，512GB存储。官网购买，有发票和保修。毕业季闲置，低价出售。",
+      "type": "secondhand",
+      "campus": "东校区",
+      "location": "宿舍3号楼",
+      "price": 12999,
+      "quality": "new",
+      "tags": [
+        "数码",
+        "电脑",
+        "MacBook"
+      ],
+      "images": [
+        "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=macbook%20pro%20laptop%20on%20desk%20professional&image_size=landscape_16_9"
+      ],
+      "status": "active",
+      "viewCount": 156,
+      "replyCount": 23,
+      "createdAt": "2024-06-26T10:30:00Z",
+      "publisher": {
+        "id": "1",
+        "nickname": "小明同学"
+      }
+    },
+    {
+      "id": "2",
+      "title": "捡到校园卡一张",
+      "description": "今天下午在图书馆三楼捡到一张校园卡，卡主姓名是王某某，学院是外国语学院。请失主联系我认领。",
+      "type": "lostfound",
+      "campus": "东校区",
+      "location": "图书馆",
+      "lostFoundType": "found",
+      "itemFeatures": "卡面有卡通贴纸，卡号后四位是1234",
+      "reward": 50,
+      "tags": [
+        "失物招领",
+        "校园卡"
+      ],
+      "images": [],
+      "status": "active",
+      "viewCount": 89,
+      "replyCount": 5,
+      "createdAt": "2024-06-26T14:20:00Z",
+      "publisher": {
+        "id": "2",
+        "nickname": "李老师"
+      }
+    },
+    {
+      "id": "3",
+      "title": "奶茶拼单！喜茶买一送一",
+      "description": "喜茶今天买一送一活动，还差2人拼单，人均12元！限东校区配送，快来一起拼！",
+      "type": "groupbuy",
+      "campus": "东校区",
+      "location": "教学楼A栋",
+      "currentCount": 2,
+      "targetCount": 4,
+      "deadline": "2024-06-27T18:00:00Z",
+      "tags": [
+        "拼单",
+        "奶茶",
+        "喜茶"
+      ],
+      "images": [
+        "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=bubble%20tea%20drinks%20colorful%20happy&image_size=landscape_16_9"
+      ],
+      "status": "active",
+      "viewCount": 234,
+      "replyCount": 45,
+      "createdAt": "2024-06-26T16:45:00Z",
+      "publisher": {
+        "id": "3",
+        "nickname": "张同学"
+      }
+    },
+    {
+      "id": "4",
+      "title": "求代取快递",
+      "description": "本人在外地，需要有人帮忙从快递站取一下包裹，送到宿舍楼下。包裹不大，重量约2kg。",
+      "type": "errand",
+      "campus": "西校区",
+      "location": "快递站",
+      "taskContent": "从西校区快递站取包裹，送到西校区宿舍5号楼楼下",
+      "reward": 15,
+      "expectedTime": "2024-06-27T12:00:00Z",
+      "tags": [
+        "跑腿",
+        "代取",
+        "快递"
+      ],
+      "images": [],
+      "status": "active",
+      "viewCount": 67,
+      "replyCount": 12,
+      "createdAt": "2024-06-25T09:10:00Z",
+      "publisher": {
+        "id": "1",
+        "nickname": "小明同学"
+      }
+    },
+    {
+      "id": "5",
+      "title": "二手自行车出售",
+      "description": "大二买的自行车，骑了一年多，车况良好，有锁。因为要实习了用不上了，便宜出。",
+      "type": "secondhand",
+      "campus": "南校区",
+      "location": "宿舍楼下",
+      "price": 280,
+      "quality": "good",
+      "tags": [
+        "自行车",
+        "代步",
+        "二手"
+      ],
+      "images": [
+        "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=vintage%20bicycle%20on%20campus%20green&image_size=landscape_16_9"
+      ],
+      "status": "completed",
+      "viewCount": 123,
+      "replyCount": 18,
+      "createdAt": "2024-06-24T11:20:00Z",
+      "publisher": {
+        "id": "3",
+        "nickname": "张同学"
+      }
+    },
+    {
+      "id": "6",
+      "title": "丢失蓝牙耳机",
+      "description": "昨天晚上在体育馆跑步时丢失了一副AirPods Pro，充电盒是白色的，耳机上有蓝色的保护套。如有拾到者请联系我，必有重谢！",
+      "type": "lostfound",
+      "campus": "东校区",
+      "location": "体育馆",
+      "lostFoundType": "lost",
+      "itemFeatures": "AirPods Pro，白色充电盒，蓝色硅胶保护套",
+      "reward": 100,
+      "tags": [
+        "丢失",
+        "耳机",
+        "AirPods"
+      ],
+      "images": [],
+      "status": "active",
+      "viewCount": 178,
+      "replyCount": 8,
+      "createdAt": "2024-06-25T20:00:00Z",
+      "publisher": {
+        "id": "1",
+        "nickname": "小明同学"
+      }
+    },
+    {
+      "id": "7",
+      "title": "考研资料低价转让",
+      "description": "本人已上岸，转让全套考研资料，包括数学、英语、政治的教材和真题，还有一些网课视频。资料很全，价格实惠！",
+      "type": "secondhand",
+      "campus": "西校区",
+      "location": "教学楼B栋",
+      "price": 150,
+      "quality": "good",
+      "tags": [
+        "考研",
+        "资料",
+        "书籍"
+      ],
+      "images": [
+        "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=stack%20of%20study%20books%20textbooks%20desk&image_size=landscape_16_9"
+      ],
+      "status": "active",
+      "viewCount": 312,
+      "replyCount": 56,
+      "createdAt": "2024-06-23T08:30:00Z",
+      "publisher": {
+        "id": "2",
+        "nickname": "李老师"
+      }
+    },
+    {
+      "id": "8",
+      "title": "食堂拼单水果",
+      "description": "食堂门口水果摊拼单，满50减10，还差3人！想一起买水果的同学来拼单呀！",
+      "type": "groupbuy",
+      "campus": "南校区",
+      "location": "食堂门口",
+      "currentCount": 2,
+      "targetCount": 5,
+      "deadline": "2024-06-27T12:00:00Z",
+      "tags": [
+        "拼单",
+        "水果",
+        "优惠"
+      ],
+      "images": [],
+      "status": "active",
+      "viewCount": 98,
+      "replyCount": 21,
+      "createdAt": "2024-06-26T07:00:00Z",
+      "publisher": {
+        "id": "3",
+        "nickname": "张同学"
+      }
+    }
+  ],
+  "favorites": [],
+  "conversations": [],
+  "messages": []
+}
