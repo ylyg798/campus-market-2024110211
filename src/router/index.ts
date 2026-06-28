@@ -77,6 +77,24 @@ const router = createRouter({
       meta: { requiresAuth: true, title: '消息中心' },
     },
     {
+      path: '/chat/:id',
+      name: 'chat',
+      component: () => import('@/views/ChatDetailView.vue'),
+      meta: { requiresAuth: true, title: '聊天详情' },
+    },
+    {
+      path: '/my-posts',
+      name: 'myPosts',
+      component: () => import('@/views/MyPostsView.vue'),
+      meta: { requiresAuth: true, title: '我的发布' },
+    },
+    {
+      path: '/my-favorites',
+      name: 'myFavorites',
+      component: () => import('@/views/MyFavoritesView.vue'),
+      meta: { requiresAuth: true, title: '我的收藏' },
+    },
+    {
       path: '/user',
       name: 'user',
       component: () => import('@/views/UserCenterView.vue'),
