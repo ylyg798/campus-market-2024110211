@@ -25,27 +25,27 @@ const errors = ref<Record<string, string>>({})
 
 function validate() {
   errors.value = {}
-  
+
   if (!form.value.nickname.trim()) {
     errors.value.nickname = '请输入昵称'
   } else if (form.value.nickname.length > 20) {
     errors.value.nickname = '昵称不能超过20个字符'
   }
-  
+
   if (!form.value.college) {
     errors.value.college = '请选择学院'
   }
-  
+
   if (!form.value.campus) {
     errors.value.campus = '请选择校区'
   }
-  
+
   return Object.keys(errors.value).length === 0
 }
 
 async function handleSubmit() {
   if (!validate()) return
-  
+
   await userStore.createUser(form.value)
   router.push('/')
 }
@@ -59,7 +59,7 @@ async function handleSubmit() {
         <h1>校园轻集市</h1>
         <p>创建您的本地身份</p>
       </div>
-      
+
       <form @submit.prevent="handleSubmit" class="setup-form">
         <div class="form-group">
           <label>昵称</label>
@@ -72,7 +72,7 @@ async function handleSubmit() {
           />
           <span v-if="errors.nickname" class="error-message">{{ errors.nickname }}</span>
         </div>
-        
+
         <div class="form-group">
           <label>学院</label>
           <select
@@ -87,7 +87,7 @@ async function handleSubmit() {
           </select>
           <span v-if="errors.college" class="error-message">{{ errors.college }}</span>
         </div>
-        
+
         <div class="form-group">
           <label>校区</label>
           <select
@@ -102,7 +102,7 @@ async function handleSubmit() {
           </select>
           <span v-if="errors.campus" class="error-message">{{ errors.campus }}</span>
         </div>
-        
+
         <div class="form-group">
           <label>身份角色</label>
           <div class="role-options">
@@ -122,10 +122,10 @@ async function handleSubmit() {
             </label>
           </div>
         </div>
-        
+
         <button type="submit" class="submit-btn">开始使用</button>
       </form>
-      
+
       <div class="tips">
         <p>💡 提示：本系统为模拟身份，不进行真实账号验证</p>
       </div>
@@ -139,7 +139,7 @@ async function handleSubmit() {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   padding: 20px;
 }
 
@@ -203,7 +203,7 @@ async function handleSubmit() {
 .form-input:focus,
 .form-select:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #10b981;
 }
 
 .form-input.has-error,
@@ -236,9 +236,9 @@ async function handleSubmit() {
 }
 
 .role-option.active {
-  border-color: #667eea;
+  border-color: #10b981;
   background: #f0f5ff;
-  color: #667eea;
+  color: #10b981;
 }
 
 .role-radio {
@@ -248,7 +248,7 @@ async function handleSubmit() {
 .submit-btn {
   margin-top: 12px;
   padding: 14px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #fff;
   border: none;
   border-radius: 8px;

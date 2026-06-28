@@ -360,7 +360,7 @@ function handleSubmit() {
 
 .submit-btn {
   padding: 8px 16px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -413,7 +413,7 @@ function handleSubmit() {
 }
 
 .type-card.active {
-  border-color: #667eea;
+  border-color: #10b981;
   background: #f0f4ff;
 }
 
@@ -428,7 +428,7 @@ function handleSubmit() {
 }
 
 .type-card.active .type-name {
-  color: #667eea;
+  color: #10b981;
 }
 
 .form-section {
@@ -464,7 +464,7 @@ function handleSubmit() {
 }
 
 .form-input:focus {
-  border-color: #667eea;
+  border-color: #10b981;
 }
 
 .form-textarea {
@@ -479,7 +479,7 @@ function handleSubmit() {
 }
 
 .form-textarea:focus {
-  border-color: #667eea;
+  border-color: #10b981;
 }
 
 .price-input-wrapper {
@@ -491,7 +491,7 @@ function handleSubmit() {
 }
 
 .price-input-wrapper:focus-within {
-  border-color: #667eea;
+  border-color: #10b981;
 }
 
 .price-input-wrapper span {
@@ -523,8 +523,8 @@ function handleSubmit() {
 }
 
 .quality-option.active {
-  border-color: #667eea;
-  color: #667eea;
+  border-color: #10b981;
+  color: #10b981;
   background: #f0f4ff;
 }
 
@@ -545,8 +545,8 @@ function handleSubmit() {
 }
 
 .lostfound-type-option.active {
-  border-color: #667eea;
-  color: #667eea;
+  border-color: #10b981;
+  color: #10b981;
   background: #f0f4ff;
 }
 

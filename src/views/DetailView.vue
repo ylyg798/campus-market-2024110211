@@ -471,7 +471,7 @@ onMounted(() => {
 .price-value {
   font-size: 28px;
   font-weight: 700;
-  color: #667eea;
+  color: #10b981;
 }
 
 .bargain-btn {
@@ -513,7 +513,7 @@ onMounted(() => {
 }
 
 .field-value.reward {
-  color: #667eea;
+  color: #10b981;
   font-weight: 600;
 }
 
@@ -527,7 +527,7 @@ onMounted(() => {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
   border-radius: 4px;
   transition: width 0.3s;
 }
@@ -578,7 +578,7 @@ onMounted(() => {
 .publisher-avatar {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -603,7 +603,7 @@ onMounted(() => {
 
 .contact-btn {
   padding: 8px 16px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -674,7 +674,7 @@ onMounted(() => {
 }
 
 .nav-item.active {
-  color: #667eea;
+  color: #10b981;
 }
 
 .nav-icon {
@@ -687,7 +687,7 @@ onMounted(() => {
 }
 
 .publish-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #fff;
   width: 56px;
   height: 56px;
@@ -696,7 +696,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   margin-top: -20px;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
 }
 
 .publish-btn .nav-icon {
@@ -832,7 +832,7 @@ onMounted(() => {
 .submit-btn {
   flex: 1;
   padding: 12px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #fff;
   border: none;
   border-radius: 8px;

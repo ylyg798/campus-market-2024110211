@@ -15,6 +15,9 @@ export const useMarketStore = defineStore('market', () => {
   })
 
   const filteredList = computed(() => {
+    if (!marketList.value || !Array.isArray(marketList.value)) {
+      return []
+    }
     let list = [...marketList.value]
 
     if (filter.value.type) {
@@ -38,12 +41,18 @@ export const useMarketStore = defineStore('market', () => {
   })
 
   const latestList = computed(() => {
+    if (!marketList.value || !Array.isArray(marketList.value)) {
+      return []
+    }
     return [...marketList.value]
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .slice(0, 10)
   })
 
   const hotList = computed(() => {
+    if (!marketList.value || !Array.isArray(marketList.value)) {
+      return []
+    }
     return [...marketList.value]
       .sort((a, b) => b.viewCount - a.viewCount)
       .slice(0, 10)

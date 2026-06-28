@@ -16,7 +16,7 @@ const messageStore = useMessageStore()
 const isLoading = ref(true)
 
 const infoTypes: { type: InfoType; label: string; icon: string; color: string }[] = [
-  { type: 'secondhand', label: '二手交易', icon: '🛒', color: '#4f46e5' },
+  { type: 'secondhand', label: '二手交易', icon: '🛒', color: '#10b981' },
   { type: 'lostfound', label: '失物招领', icon: '🔍', color: '#10b981' },
   { type: 'groupbuy', label: '拼单搭子', icon: '🤝', color: '#f59e0b' },
   { type: 'errand', label: '跑腿委托', icon: '🚶', color: '#ef4444' },
@@ -29,8 +29,8 @@ const hotInfos = computed(() => {
     .slice(0, 5)
 })
 
-const favoriteCount = computed(() => favoriteStore.favorites.length)
-const unreadCount = computed(() => messageStore.totalUnread)
+const favoriteCount = computed(() => favoriteStore?.favorites?.length || 0)
+const unreadCount = computed(() => messageStore?.totalUnread || 0)
 
 function formatTime(dateString: string) {
   const date = new Date(dateString)
@@ -38,7 +38,7 @@ function formatTime(dateString: string) {
   const diff = now.getTime() - date.getTime()
   const hours = Math.floor(diff / (1000 * 60 * 60))
   const days = Math.floor(hours / 24)
-  
+
   if (days > 0) return `${days}天前`
   if (hours > 0) return `${hours}小时前`
   return '刚刚'
@@ -256,7 +256,7 @@ onMounted(() => {
 }
 
 .home-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   padding: 24px;
   color: #fff;
   border-radius: 0 0 24px 24px;
@@ -322,7 +322,7 @@ onMounted(() => {
 
 .view-all-btn {
   font-size: 14px;
-  color: #667eea;
+  color: #10b981;
   border: none;
   background: none;
   cursor: pointer;
@@ -471,7 +471,7 @@ onMounted(() => {
 .info-price {
   font-size: 15px;
   font-weight: 600;
-  color: #667eea;
+  color: #10b981;
   white-space: nowrap;
 }
 
@@ -550,7 +550,7 @@ onMounted(() => {
 }
 
 .nav-item.active {
-  color: #667eea;
+  color: #10b981;
 }
 
 .nav-icon {
@@ -563,11 +563,11 @@ onMounted(() => {
 }
 
 .nav-item.active .nav-label {
-  color: #667eea;
+  color: #10b981;
 }
 
 .publish-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #fff;
   width: 56px;
   height: 56px;
@@ -576,7 +576,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   margin-top: -20px;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
 }
 
 .publish-btn .nav-icon {

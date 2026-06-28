@@ -159,7 +159,7 @@ function formatTime(dateString: string) {
 .trend-avatar {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -248,7 +248,7 @@ function formatTime(dateString: string) {
 }
 
 .nav-item.active {
-  color: #667eea;
+  color: #10b981;
 }
 
 .nav-icon {
@@ -261,7 +261,7 @@ function formatTime(dateString: string) {
 }
 
 .publish-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #fff;
   width: 56px;
   height: 56px;
@@ -270,7 +270,7 @@ function formatTime(dateString: string) {
   align-items: center;
   justify-content: center;
   margin-top: -20px;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
 }
 
 .publish-btn .nav-icon {

@@ -26,6 +26,15 @@
       "role": "student",
       "creditScore": 95,
       "createdAt": "2024-03-10T09:15:00Z"
+    },
+    {
+      "nickname": "yy",
+      "college": "计算机学院",
+      "campus": "东校区",
+      "role": "student",
+      "creditScore": 850,
+      "createdAt": "2026-06-27T14:25:14.979Z",
+      "id": "N08SJPUoCgY"
     }
   ],
   "infos": [
@@ -236,5 +245,6 @@
   ],
   "favorites": [],
   "conversations": [],
-  "messages": []
+  "messages": [],
+  "$schema": "./node_modules/json-server/schema.json"
 }

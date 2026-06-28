@@ -117,7 +117,7 @@ function goToPage(path: string) {
   left: 0;
   right: 0;
   height: 180px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
 }
 
 .profile-info {
@@ -279,7 +279,7 @@ function goToPage(path: string) {
 }
 
 .nav-item.active {
-  color: #667eea;
+  color: #10b981;
 }
 
 .nav-icon {
@@ -292,11 +292,11 @@ function goToPage(path: string) {
 }
 
 .nav-item.active .nav-label {
-  color: #667eea;
+  color: #10b981;
 }
 
 .publish-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #fff;
   width: 56px;
   height: 56px;
@@ -305,7 +305,7 @@ function goToPage(path: string) {
   align-items: center;
   justify-content: center;
   margin-top: -20px;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
 }
 
 .publish-btn .nav-icon {

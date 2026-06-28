@@ -64,7 +64,7 @@ function clearFilters() {
 
 onMounted(() => {
   marketStore.fetchMarketList()
-  
+
   const type = route.query.type as InfoType
   if (type) {
     selectedType.value = type
@@ -255,7 +255,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -339,9 +339,9 @@ onMounted(() => {
 }
 
 .filter-option.active {
-  background: #667eea;
+  background: #10b981;
   color: #fff;
-  border-color: #667eea;
+  border-color: #10b981;
 }
 
 .filter-select {
@@ -358,7 +358,7 @@ onMounted(() => {
   border: 1px solid #e2e8f0;
   border-radius: 6px;
   font-size: 13px;
-  color: #667eea;
+  color: #10b981;
   background: #fff;
   cursor: pointer;
 }
@@ -472,7 +472,7 @@ onMounted(() => {
 .price {
   font-size: 18px;
   font-weight: 600;
-  color: #667eea;
+  color: #10b981;
 }
 
 .time {
@@ -507,7 +507,7 @@ onMounted(() => {
 }
 
 .nav-item.active {
-  color: #667eea;
+  color: #10b981;
 }
 
 .nav-icon {
@@ -520,11 +520,11 @@ onMounted(() => {
 }
 
 .nav-item.active .nav-label {
-  color: #667eea;
+  color: #10b981;
 }
 
 .publish-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #fff;
   width: 56px;
   height: 56px;
@@ -533,7 +533,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   margin-top: -20px;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
 }
 
 .publish-btn .nav-icon {
