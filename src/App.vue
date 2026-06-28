@@ -28,13 +28,12 @@ const navItems = [
     <nav v-if="isLoggedIn" class="top-nav">
       <div class="nav-container">
         <div class="nav-logo">
-          <span class="logo-icon">🎓</span>
           <span class="logo-text">校园轻集市</span>
         </div>
-        
+
         <div class="nav-links">
-          <RouterLink 
-            v-for="item in navItems" 
+          <RouterLink
+            v-for="item in navItems"
             :key="item.path"
             :to="item.path"
             class="nav-link"
@@ -95,11 +94,6 @@ body {
 .nav-logo {
   display: flex;
   align-items: center;
-  gap: 12px;
-}
-
-.logo-icon {
-  font-size: 24px;
 }
 
 .logo-text {
