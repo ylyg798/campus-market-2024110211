@@ -11,7 +11,16 @@ import {
   TrendingUp,
   Home,
   RefreshCw,
-  ArrowLeft
+  ArrowLeft,
+  ShoppingCart,
+  Search,
+  Users,
+  PersonStanding,
+  Eye,
+  Edit,
+  Lightbulb,
+  MessageCircle,
+  Plus
 } from '@lucide/vue'
 
 const router = useRouter()
@@ -77,11 +86,11 @@ onMounted(() => {
     <header class="board-header">
       <div class="header-content">
         <button class="back-btn" @click="router.back()">
-          <span>←</span>
+          <ArrowLeft :size="20" />
         </button>
         <h1>数据看板</h1>
         <button class="refresh-btn" @click="marketStore.fetchMarketList()">
-          <span>🔄</span>
+          <RefreshCw :size="20" />
         </button>
       </div>
     </header>
@@ -90,7 +99,7 @@ onMounted(() => {
       <!-- 用户信息卡片 -->
       <div v-if="userStore.user" class="user-card">
         <div class="user-avatar">
-          <span>👤</span>
+          <User :size="32" />
         </div>
         <div class="user-info">
           <div class="user-name">{{ userStore.user.nickname }}</div>
@@ -98,7 +107,7 @@ onMounted(() => {
         </div>
         <div class="user-stats">
           <div class="stat-item">
-            <span class="stat-icon">⭐</span>
+            <Star :size="18" class="stat-icon" />
             <span class="stat-value">{{ userStore.user.creditScore }}</span>
             <span class="stat-label">信用分</span>
           </div>
@@ -107,11 +116,14 @@ onMounted(() => {
 
       <!-- 总览统计 -->
       <div class="overview-section">
-        <h2 class="section-title">📊 总览统计</h2>
+        <h2 class="section-title">
+          <BarChart2 :size="20" />
+          总览统计
+        </h2>
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-icon-wrapper">
-              <span class="stat-icon">📋</span>
+              <List :size="24" />
             </div>
             <div class="stat-content">
               <div class="stat-number">{{ stats.total }}</div>
@@ -121,7 +133,7 @@ onMounted(() => {
 
           <div class="stat-card active">
             <div class="stat-icon-wrapper">
-              <span class="stat-icon">🔥</span>
+              <TrendingUp :size="24" />
             </div>
             <div class="stat-content">
               <div class="stat-number">{{ stats.active }}</div>
@@ -131,7 +143,7 @@ onMounted(() => {
 
           <div class="stat-card completed">
             <div class="stat-icon-wrapper">
-              <span class="stat-icon">✅</span>
+              <Star :size="24" />
             </div>
             <div class="stat-content">
               <div class="stat-number">{{ stats.completed }}</div>
@@ -141,7 +153,7 @@ onMounted(() => {
 
           <div class="stat-card">
             <div class="stat-icon-wrapper">
-              <span class="stat-icon">👁️</span>
+              <Eye :size="24" />
             </div>
             <div class="stat-content">
               <div class="stat-number">{{ stats.totalViews }}</div>
@@ -151,7 +163,7 @@ onMounted(() => {
 
           <div class="stat-card">
             <div class="stat-icon-wrapper">
-              <span class="stat-icon">📈</span>
+              <TrendingUp :size="24" />
             </div>
             <div class="stat-content">
               <div class="stat-number">{{ stats.avgViews }}</div>
@@ -163,10 +175,15 @@ onMounted(() => {
 
       <!-- 类型分布 -->
       <div class="distribution-section">
-        <h2 class="section-title">📈 类型分布</h2>
+        <h2 class="section-title">
+          <TrendingUp :size="20" />
+          类型分布
+        </h2>
         <div class="distribution-list">
           <div class="distribution-item">
-            <div class="dist-icon">🛒</div>
+            <div class="dist-icon">
+              <ShoppingCart :size="24" />
+            </div>
             <div class="dist-info">
               <div class="dist-label">二手交易</div>
               <div class="dist-bar-wrapper">
@@ -177,7 +194,9 @@ onMounted(() => {
           </div>
 
           <div class="distribution-item">
-            <div class="dist-icon">🔍</div>
+            <div class="dist-icon">
+              <Search :size="24" />
+            </div>
             <div class="dist-info">
               <div class="dist-label">失物招领</div>
               <div class="dist-bar-wrapper">
@@ -188,7 +207,9 @@ onMounted(() => {
           </div>
 
           <div class="distribution-item">
-            <div class="dist-icon">🤝</div>
+            <div class="dist-icon">
+              <Users :size="24" />
+            </div>
             <div class="dist-info">
               <div class="dist-label">拼单搭子</div>
               <div class="dist-bar-wrapper">
@@ -199,7 +220,9 @@ onMounted(() => {
           </div>
 
           <div class="distribution-item">
-            <div class="dist-icon">🚶</div>
+            <div class="dist-icon">
+              <PersonStanding :size="24" />
+            </div>
             <div class="dist-info">
               <div class="dist-label">跑腿委托</div>
               <div class="dist-bar-wrapper">
@@ -213,14 +236,17 @@ onMounted(() => {
 
       <!-- 快捷操作 -->
       <div class="actions-section">
-        <h2 class="section-title">⚡ 快捷操作</h2>
+        <h2 class="section-title">
+          <Lightbulb :size="20" />
+          快捷操作
+        </h2>
         <div class="actions-grid">
           <button class="action-btn primary" @click="goToPublish()">
-            <span class="action-icon">✏️</span>
+            <Edit :size="20" class="action-icon" />
             <span class="action-label">发布信息</span>
           </button>
           <button class="action-btn secondary" @click="goToList()">
-            <span class="action-icon">📋</span>
+            <List :size="20" class="action-icon" />
             <span class="action-label">查看列表</span>
           </button>
         </div>
@@ -229,7 +255,7 @@ onMounted(() => {
       <!-- 提示信息 -->
       <div class="tips-section">
         <div class="tip-card">
-          <div class="tip-icon">💡</div>
+          <Lightbulb :size="24" class="tip-icon" />
           <div class="tip-content">
             <div class="tip-title">小提示</div>
             <div class="tip-text">
@@ -241,23 +267,23 @@ onMounted(() => {
     </main>
 
     <nav class="bottom-nav">
-      <button class="nav-item" @click="router.push('/home')">
-        <span class="nav-icon">🏠</span>
+      <button class="nav-item" @click="router.push('/')">
+        <Home :size="20" class="nav-icon" />
         <span class="nav-label">首页</span>
       </button>
       <button class="nav-item" @click="router.push('/list')">
-        <span class="nav-icon">📋</span>
+        <List :size="20" class="nav-icon" />
         <span class="nav-label">列表</span>
       </button>
       <button class="nav-item publish-btn" @click="router.push('/publish')">
-        <span class="nav-icon">+</span>
+        <Plus :size="24" />
       </button>
       <button class="nav-item" @click="router.push('/message')">
-        <span class="nav-icon">💬</span>
+        <MessageCircle :size="20" class="nav-icon" />
         <span class="nav-label">消息</span>
       </button>
-      <button class="nav-item" @click="router.push('/profile')">
-        <span class="nav-icon">👤</span>
+      <button class="nav-item" @click="router.push('/user')">
+        <User :size="20" class="nav-icon" />
         <span class="nav-label">我的</span>
       </button>
     </nav>

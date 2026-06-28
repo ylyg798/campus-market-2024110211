@@ -4,6 +4,19 @@ import { useRouter } from 'vue-router'
 import { useMarketStore } from '@/stores/marketStore'
 import { useUserStore } from '@/stores/userStore'
 import type { InfoStatus } from '@/types/market'
+import {
+  ArrowLeft,
+  Plus,
+  Upload,
+  Download,
+  MapPin,
+  Clock,
+  DollarSign,
+  Eye,
+  User,
+  Package,
+  Search
+} from '@lucide/vue'
 
 const router = useRouter()
 const marketStore = useMarketStore()
@@ -23,8 +36,8 @@ const statusLabels: Record<string, string> = {
 const myPublishedTasks = computed(() => {
   if (!userStore.user || !marketStore.marketList) return []
   return marketStore.marketList
-    .filter(item => 
-      item.type === 'errand' && 
+    .filter(item =>
+      item.type === 'errand' &&
       item.publisher.id === userStore.user!.id
     )
     .filter(item => {
@@ -37,8 +50,8 @@ const myPublishedTasks = computed(() => {
 const myAcceptedTasks = computed(() => {
   if (!userStore.user || !marketStore.marketList) return []
   return marketStore.marketList
-    .filter(item => 
-      item.type === 'errand' && 
+    .filter(item =>
+      item.type === 'errand' &&
       item.assignee?.id === userStore.user!.id
     )
     .filter(item => {
@@ -81,11 +94,11 @@ onMounted(() => {
     <header class="errands-header">
       <div class="header-content">
         <button class="back-btn" @click="router.back()">
-          <span>←</span>
+          <ArrowLeft :size="20" />
         </button>
         <h1>我的跑腿任务</h1>
         <button class="publish-btn" @click="goToPublish()">
-          <span>+</span>
+          <Plus :size="20" />
         </button>
       </div>
     </header>
@@ -93,20 +106,22 @@ onMounted(() => {
     <main class="errands-main">
       <!-- 标签切换 -->
       <div class="tabs-section">
-        <button 
-          class="tab-btn" 
+        <button
+          class="tab-btn"
           :class="{ active: activeTab === 'published' }"
           @click="changeTab('published')"
         >
-          📤 我发布的任务
+          <Upload :size="18" />
+          我发布的任务
           <span class="tab-count">{{ myPublishedTasks.length }}</span>
         </button>
-        <button 
-          class="tab-btn" 
+        <button
+          class="tab-btn"
           :class="{ active: activeTab === 'accepted' }"
           @click="changeTab('accepted')"
         >
-          📥 我接取的任务
+          <Download :size="18" />
+          我接取的任务
           <span class="tab-count">{{ myAcceptedTasks.length }}</span>
         </button>
       </div>
@@ -114,8 +129,8 @@ onMounted(() => {
       <!-- 状态筛选 -->
       <div class="filter-section">
         <div class="filter-tabs">
-          <button 
-            v-for="(label, status) in { 'all': '全部', ...statusLabels }" 
+          <button
+            v-for="(label, status) in { 'all': '全部', ...statusLabels }"
             :key="status"
             class="filter-tab"
             :class="{ active: statusFilter === status }"
@@ -130,8 +145,8 @@ onMounted(() => {
       <div class="tasks-section">
         <!-- 我发布的任务 -->
         <div v-if="activeTab === 'published'" class="tasks-list">
-          <div 
-            v-for="task in myPublishedTasks" 
+          <div
+            v-for="task in myPublishedTasks"
             :key="task.id"
             class="task-card"
             @click="goToDetail(task.id)"
@@ -142,18 +157,18 @@ onMounted(() => {
                 {{ statusLabels[task.status] || task.status }}
               </div>
             </div>
-            
+
             <div class="task-info">
               <div class="info-item">
-                <span class="info-icon">📍</span>
+                <MapPin :size="14" class="info-icon" />
                 <span>{{ task.campus }} · {{ task.location }}</span>
               </div>
               <div class="info-item">
-                <span class="info-icon">🕐</span>
+                <Clock :size="14" class="info-icon" />
                 <span>{{ formatTime(task.createdAt) }}</span>
               </div>
               <div class="info-item" v-if="task.reward">
-                <span class="info-icon">💰</span>
+                <DollarSign :size="14" class="info-icon" />
                 <span class="reward-text">¥{{ task.reward }}</span>
               </div>
             </div>
@@ -171,14 +186,17 @@ onMounted(() => {
             </div>
 
             <div class="task-footer">
-              <div class="view-count">👁️ {{ task.viewCount }} 次浏览</div>
+              <div class="view-count">
+                <Eye :size="14" />
+                {{ task.viewCount }} 次浏览
+              </div>
               <button class="detail-btn">查看详情 →</button>
             </div>
           </div>
 
           <!-- 空状态 -->
           <div v-if="myPublishedTasks.length === 0" class="empty-state">
-            <div class="empty-icon">📭</div>
+            <Package :size="48" class="empty-icon" />
             <div class="empty-text">暂无发布的任务</div>
             <button class="create-btn" @click="goToPublish()">发布新任务</button>
           </div>
@@ -186,8 +204,8 @@ onMounted(() => {
 
         <!-- 我接取的任务 -->
         <div v-if="activeTab === 'accepted'" class="tasks-list">
-          <div 
-            v-for="task in myAcceptedTasks" 
+          <div
+            v-for="task in myAcceptedTasks"
             :key="task.id"
             class="task-card"
             @click="goToDetail(task.id)"
@@ -198,22 +216,22 @@ onMounted(() => {
                 {{ statusLabels[task.status] || task.status }}
               </div>
             </div>
-            
+
             <div class="task-info">
               <div class="info-item">
-                <span class="info-icon">📍</span>
+                <MapPin :size="14" class="info-icon" />
                 <span>{{ task.campus }} · {{ task.location }}</span>
               </div>
               <div class="info-item">
-                <span class="info-icon">👤</span>
+                <User :size="14" class="info-icon" />
                 <span>发布者：{{ task.publisher.nickname }}</span>
               </div>
               <div class="info-item" v-if="task.reward">
-                <span class="info-icon">💰</span>
+                <DollarSign :size="14" class="info-icon" />
                 <span class="reward-text">¥{{ task.reward }}</span>
               </div>
               <div class="info-item" v-if="task.expectedTime">
-                <span class="info-icon">⏰</span>
+                <Clock :size="14" class="info-icon" />
                 <span>期望完成：{{ formatTime(task.expectedTime) }}</span>
               </div>
             </div>

@@ -1,10 +1,32 @@
-<script setup lang="ts">import { ref, onMounted, computed } from 'vue';
+<script setup lang="ts">
+import { ref, onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useMarketStore } from '@/stores/marketStore';
 import { useFavoriteStore } from '@/stores/favoriteStore';
 import { useUserStore } from '@/stores/userStore';
 import { useMessageStore } from '@/stores/messageStore';
 import type { InfoType, InfoStatus } from '@/types/market';
+import {
+  ShoppingCart,
+  Search,
+  Users,
+  PersonStanding,
+  ArrowLeft,
+  Heart,
+  MapPin,
+  Clock,
+  Eye,
+  MessageCircle,
+  CheckCircle,
+  User,
+  FileText,
+  Target,
+  RefreshCw,
+  AlertTriangle,
+  Home,
+  Plus
+} from '@lucide/vue';
+
 const router = useRouter();
 const route = useRoute();
 const marketStore = useMarketStore();
@@ -21,12 +43,12 @@ const taskProgressText = ref('');
 const infoTypes: {
  type: InfoType;
  label: string;
- icon: string;
+ icon: any;
 }[] = [
- { type: 'secondhand', label: '二手交易', icon: '🛒' },
- { type: 'lostfound', label: '失物招领', icon: '🔍' },
- { type: 'groupbuy', label: '拼单搭子', icon: '🤝' },
- { type: 'errand', label: '跑腿委托', icon: '🚶' },
+ { type: 'secondhand', label: '二手交易', icon: ShoppingCart },
+ { type: 'lostfound', label: '失物招领', icon: Search },
+ { type: 'groupbuy', label: '拼单搭子', icon: Users },
+ { type: 'errand', label: '跑腿委托', icon: PersonStanding },
 ];
 const qualityLabels: Record<string, string> = {
  'new': '全新',
@@ -61,9 +83,7 @@ const isTaskAssignee = computed(() => {
 function getTypeName(type: InfoType) {
  return infoTypes.find(t => t.type === type)?.label || type;
 }
-function getTypeIcon(type: InfoType) {
- return infoTypes.find(t => t.type === type)?.icon || '📋';
-}
+
 function formatTime(dateString: string) {
  const date = new Date(dateString);
  return date.toLocaleString('zh-CN', {
@@ -154,12 +174,12 @@ onMounted(() => {
     <header class="detail-header">
       <div class="header-content">
         <button class="back-btn" @click="router.back()">
-          <span>←</span>
+          <ArrowLeft :size="20" />
         </button>
         <h1>信息详情</h1>
         <div class="header-actions">
           <button class="favorite-btn" :class="{ active: isFavorite }" @click="toggleFavorite()">
-            <span>{{ isFavorite ? '❤️' : '🤍' }}</span>
+            <Heart :size="20" :fill="isFavorite ? 'currentColor' : 'none'" />
           </button>
         </div>
       </div>
@@ -171,7 +191,7 @@ onMounted(() => {
           <img v-for="(img, index) in currentInfo.images" :key="index" :src="img" :alt="currentInfo.title" />
         </div>
         <div v-else class="no-image-section">
-          <span class="no-image-icon">{{ getTypeIcon(currentInfo.type) }}</span>
+          <component :is="infoTypes.find(t => t.type === currentInfo.type)?.icon" :size="64" class="no-image-icon" />
           <span class="no-image-text">{{ getTypeName(currentInfo.type) }}</span>
         </div>
       </div>
@@ -188,15 +208,15 @@ onMounted(() => {
 
         <div class="info-meta">
           <div class="meta-item">
-            <span class="meta-icon">📍</span>
+            <MapPin :size="16" class="meta-icon" />
             <span>{{ currentInfo.campus }} · {{ currentInfo.location }}</span>
           </div>
           <div class="meta-item">
-            <span class="meta-icon">🕐</span>
+            <Clock :size="16" class="meta-icon" />
             <span>{{ formatTime(currentInfo.createdAt) }}</span>
           </div>
           <div class="meta-item">
-            <span class="meta-icon">👁️</span>
+            <Eye :size="16" class="meta-icon" />
             <span>浏览 {{ currentInfo.viewCount }} 次</span>
           </div>
         </div>
@@ -205,7 +225,8 @@ onMounted(() => {
           <div class="price-label">价格</div>
           <div class="price-value">¥{{ currentInfo.price }}</div>
           <button v-if="currentInfo.type === 'secondhand'" class="bargain-btn" @click="openBargain()">
-            💰 砍价
+            <MessageCircle :size="16" />
+            砍价
           </button>
         </div>
 
@@ -264,12 +285,12 @@ onMounted(() => {
           <!-- 任务接取者信息 -->
           <div class="assignee-section" v-if="currentInfo.assignee">
             <div class="assignee-header">
-              <span class="assignee-icon">✅</span>
+              <CheckCircle :size="18" class="assignee-icon" />
               <span class="assignee-title">已由同学接取</span>
             </div>
             <div class="assignee-info">
               <div class="assignee-avatar">
-                <span>👤</span>
+                <User :size="20" />
               </div>
               <div class="assignee-details">
                 <div class="assignee-name">{{ currentInfo.assignee.nickname }}</div>
@@ -281,7 +302,7 @@ onMounted(() => {
           <!-- 任务进度 -->
           <div class="task-progress-section" v-if="currentInfo.taskProgress">
             <div class="progress-header">
-              <span class="progress-icon">📝</span>
+              <FileText :size="18" class="progress-icon" />
               <span class="progress-title">任务进度</span>
             </div>
             <div class="progress-content">{{ currentInfo.taskProgress }}</div>
@@ -291,7 +312,8 @@ onMounted(() => {
           <div class="task-actions" v-if="currentInfo.type === 'errand'">
             <!-- 接任务按钮 -->
             <button v-if="canAcceptTask" class="accept-task-btn" @click="acceptTask()">
-              🎯 接受任务
+              <Target :size="16" />
+              接受任务
             </button>
 
             <!-- 状态管理按钮 -->
@@ -300,7 +322,8 @@ onMounted(() => {
               class="update-status-btn"
               @click="openStatusModal()"
             >
-              🔄 更新任务状态
+              <RefreshCw :size="16" />
+              更新任务状态
             </button>
           </div>
         </div>
@@ -316,26 +339,36 @@ onMounted(() => {
 
         <div class="publisher-section">
           <div class="publisher-avatar">
-            <span>👤</span>
+            <User :size="24" />
           </div>
           <div class="publisher-info">
             <div class="publisher-name">{{ currentInfo.publisher.nickname }}</div>
             <div class="publisher-role">发布者</div>
           </div>
           <button class="contact-btn" @click="contactPublisher()">
-            💬 联系
+            <MessageCircle :size="16" />
+            联系
           </button>
         </div>
 
         <div class="safety-tips">
           <div class="tips-header">
-            <span class="tips-icon">⚠️</span>
+            <AlertTriangle :size="18" class="tips-icon" />
             <h3>交易安全提醒</h3>
           </div>
           <ul class="tips-list">
-            <li>📍 尽量选择公共地点交易</li>
-            <li>🔍 贵重物品注意验真</li>
-            <li>🔒 保护个人联系方式和隐私</li>
+            <li>
+              <MapPin :size="14" />
+              尽量选择公共地点交易
+            </li>
+            <li>
+              <Search :size="14" />
+              贵重物品注意验真
+            </li>
+            <li>
+              <AlertTriangle :size="14" />
+              保护个人联系方式和隐私
+            </li>
           </ul>
         </div>
       </div>
@@ -343,22 +376,22 @@ onMounted(() => {
 
     <nav class="bottom-nav">
       <button class="nav-item" @click="router.push('/')">
-        <span class="nav-icon">🏠</span>
+        <Home :size="20" class="nav-icon" />
         <span class="nav-label">首页</span>
       </button>
       <button class="nav-item" @click="router.push('/market')">
-        <span class="nav-icon">🛒</span>
+        <ShoppingCart :size="20" class="nav-icon" />
         <span class="nav-label">集市</span>
       </button>
       <button class="nav-item publish-btn" @click="router.push('/publish')">
-        <span class="nav-icon">+</span>
+        <Plus :size="24" />
       </button>
       <button class="nav-item" @click="router.push('/messages')">
-        <span class="nav-icon">💬</span>
+        <MessageCircle :size="20" class="nav-icon" />
         <span class="nav-label">消息</span>
       </button>
       <button class="nav-item" @click="router.push('/profile')">
-        <span class="nav-icon">👤</span>
+        <User :size="20" class="nav-icon" />
         <span class="nav-label">我的</span>
       </button>
     </nav>
@@ -366,7 +399,10 @@ onMounted(() => {
     <div v-if="showBargainModal" class="modal-overlay" @click="closeBargain()">
       <div class="modal-content" @click.stop>
         <div class="modal-header">
-          <h3>💰 模拟砍价</h3>
+          <h3>
+            <MessageCircle :size="18" />
+            模拟砍价
+          </h3>
           <button class="close-btn" @click="closeBargain()">✕</button>
         </div>
         <div class="modal-body">
@@ -394,7 +430,10 @@ onMounted(() => {
     <div v-if="showStatusModal" class="modal-overlay" @click="closeStatusModal()">
       <div class="modal-content" @click.stop>
         <div class="modal-header">
-          <h3>🔄 更新任务状态</h3>
+          <h3>
+            <RefreshCw :size="18" />
+            更新任务状态
+          </h3>
           <button class="close-btn" @click="closeStatusModal()">✕</button>
         </div>
         <div class="modal-body">

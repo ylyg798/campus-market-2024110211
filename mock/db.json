@@ -71,7 +71,7 @@
         "MacBook"
       ],
       "images": [
-        "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=macbook%20pro%20laptop%20on%20desk%20professional&image_size=landscape_16_9"
+        "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&q=80"
       ],
       "status": "active",
       "viewCount": 156,
@@ -96,7 +96,9 @@
         "失物招领",
         "校园卡"
       ],
-      "images": [],
+      "images": [
+        "https://images.unsplash.com/photo-1599043686099-96a05e2e0d44?w=800&q=80"
+      ],
       "status": "active",
       "viewCount": 89,
       "replyCount": 5,
@@ -122,7 +124,7 @@
         "喜茶"
       ],
       "images": [
-        "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=bubble%20tea%20drinks%20colorful%20happy&image_size=landscape_16_9"
+        "https://images.unsplash.com/photo-1582798765407-a1877888917c?w=800&q=80"
       ],
       "status": "active",
       "viewCount": 234,
@@ -148,7 +150,9 @@
         "代取",
         "快递"
       ],
-      "images": [],
+      "images": [
+        "https://images.unsplash.com/photo-1526563585930-555a23f7f8ae?w=800&q=80"
+      ],
       "status": "active",
       "viewCount": 67,
       "replyCount": 12,
@@ -173,7 +177,7 @@
         "二手"
       ],
       "images": [
-        "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=vintage%20bicycle%20on%20campus%20green&image_size=landscape_16_9"
+        "https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?w=800&q=80"
       ],
       "status": "completed",
       "viewCount": 123,
@@ -199,7 +203,9 @@
         "耳机",
         "AirPods"
       ],
-      "images": [],
+      "images": [
+        "https://images.unsplash.com/photo-1590031905408-175167936462?w=800&q=80"
+      ],
       "status": "active",
       "viewCount": 178,
       "replyCount": 8,
@@ -224,7 +230,7 @@
         "书籍"
       ],
       "images": [
-        "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=stack%20of%20study%20books%20textbooks%20desk&image_size=landscape_16_9"
+        "https://images.unsplash.com/photo-1544717302-77c55c094011?w=800&q=80"
       ],
       "status": "active",
       "viewCount": 312,
@@ -250,7 +256,9 @@
         "水果",
         "优惠"
       ],
-      "images": [],
+      "images": [
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80"
+      ],
       "status": "active",
       "viewCount": 98,
       "replyCount": 21,
@@ -275,7 +283,9 @@
         "代购",
         "午餐"
       ],
-      "images": [],
+      "images": [
+        "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80"
+      ],
       "status": "claimed",
       "viewCount": 45,
       "replyCount": 8,
@@ -306,7 +316,9 @@
         "占座",
         "图书馆"
       ],
-      "images": [],
+      "images": [
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=800&q=80"
+      ],
       "status": "in-progress",
       "viewCount": 78,
       "replyCount": 15,
@@ -338,7 +350,9 @@
         "复印",
         "资料"
       ],
-      "images": [],
+      "images": [
+        "https://images.unsplash.com/photo-1544717302-77c55c094011?w=800&q=80"
+      ],
       "status": "completed",
       "viewCount": 56,
       "replyCount": 10,
@@ -370,7 +384,9 @@
         "搬行李",
         "开学"
       ],
-      "images": [],
+      "images": [
+        "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80"
+      ],
       "status": "active",
       "viewCount": 89,
       "replyCount": 12,
@@ -379,6 +395,29 @@
         "id": "N08SJPUoCgY",
         "nickname": "yy"
       }
+    },
+    {
+      "title": "云立方包裹跑腿",
+      "description": "无",
+      "type": "errand",
+      "campus": "南校区",
+      "location": "大面铺云立方街道2号",
+      "tags": [
+        "云立方取包裹"
+      ],
+      "images": [],
+      "taskContent": "帮我拿826-2-33的包裹",
+      "reward": 5,
+      "expectedTime": "2026-06-28T19:00",
+      "status": "active",
+      "viewCount": 0,
+      "favoriteCount": 0,
+      "createdAt": "2026-06-28T09:08:15.151Z",
+      "publisher": {
+        "id": "1",
+        "nickname": "测试用户"
+      },
+      "id": "JSbRyqwymsU"
     }
   ],
   "favorites": [],
