@@ -17,6 +17,18 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: '/home',
+      name: 'home-alias',
+      component: () => import('@/views/HomeView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/list',
+      name: 'list',
+      component: () => import('@/views/ListView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/market',
       name: 'market',
       component: () => import('@/views/MarketView.vue'),
@@ -35,8 +47,14 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: '/message',
+      name: 'message',
+      component: () => import('@/views/MessagesView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/messages',
-      name: 'messages',
+      name: 'messages-alias',
       component: () => import('@/views/MessagesView.vue'),
       meta: { requiresAuth: true },
     },
@@ -44,6 +62,12 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: () => import('@/views/ProfileView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/board',
+      name: 'board',
+      component: () => import('@/views/BoardView.vue'),
       meta: { requiresAuth: true },
     },
     {
