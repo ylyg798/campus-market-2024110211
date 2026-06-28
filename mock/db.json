@@ -241,6 +241,126 @@
         "id": "3",
         "nickname": "张同学"
       }
+    },
+    {
+      "id": "9",
+      "title": "代购午餐",
+      "description": "今天实在太忙了，需要有人帮忙从食堂买一份午餐送到教学楼。",
+      "type": "errand",
+      "campus": "东校区",
+      "location": "教学楼A栋",
+      "taskContent": "从东校区食堂购买一份套餐（红烧肉+青菜+米饭），送到教学楼A栋302教室",
+      "reward": 10,
+      "expectedTime": "2024-06-27T12:30:00Z",
+      "tags": [
+        "跑腿",
+        "代购",
+        "午餐"
+      ],
+      "images": [],
+      "status": "claimed",
+      "viewCount": 45,
+      "replyCount": 8,
+      "createdAt": "2024-06-26T10:00:00Z",
+      "updatedAt": "2024-06-26T11:30:00Z",
+      "publisher": {
+        "id": "1",
+        "nickname": "小明同学"
+      },
+      "assignee": {
+        "id": "N08SJPUoCgY",
+        "nickname": "yy",
+        "acceptedAt": "2024-06-26T11:30:00Z"
+      }
+    },
+    {
+      "id": "10",
+      "title": "图书馆占座",
+      "description": "明天要考试，需要有人帮忙在图书馆占个座位。",
+      "type": "errand",
+      "campus": "西校区",
+      "location": "图书馆",
+      "taskContent": "在西校区图书馆三楼自习区占一个座位，最好靠窗位置，早上8点前占好",
+      "reward": 20,
+      "expectedTime": "2024-06-27T08:00:00Z",
+      "tags": [
+        "跑腿",
+        "占座",
+        "图书馆"
+      ],
+      "images": [],
+      "status": "in-progress",
+      "viewCount": 78,
+      "replyCount": 15,
+      "createdAt": "2024-06-26T15:00:00Z",
+      "updatedAt": "2024-06-26T16:00:00Z",
+      "publisher": {
+        "id": "3",
+        "nickname": "张同学"
+      },
+      "assignee": {
+        "id": "N08SJPUoCgY",
+        "nickname": "yy",
+        "acceptedAt": "2024-06-26T16:00:00Z"
+      },
+      "taskProgress": "已经成功占座，座位在三楼靠窗位置，编号302"
+    },
+    {
+      "id": "11",
+      "title": "复印资料",
+      "description": "需要复印一份课程资料，大概20页。",
+      "type": "errand",
+      "campus": "南校区",
+      "location": "打印店",
+      "taskContent": "在南校区打印店复印20页资料，完成后送到南校区宿舍6号楼",
+      "reward": 15,
+      "expectedTime": "2024-06-27T14:00:00Z",
+      "tags": [
+        "跑腿",
+        "复印",
+        "资料"
+      ],
+      "images": [],
+      "status": "completed",
+      "viewCount": 56,
+      "replyCount": 10,
+      "createdAt": "2024-06-25T12:00:00Z",
+      "updatedAt": "2024-06-25T15:00:00Z",
+      "publisher": {
+        "id": "2",
+        "nickname": "李老师"
+      },
+      "assignee": {
+        "id": "N08SJPUoCgY",
+        "nickname": "yy",
+        "acceptedAt": "2024-06-25T13:00:00Z"
+      },
+      "taskProgress": "任务已完成，资料已送达"
+    },
+    {
+      "id": "12",
+      "title": "搬行李到宿舍",
+      "description": "刚开学，行李太多搬不动，需要有人帮忙。",
+      "type": "errand",
+      "campus": "北校区",
+      "location": "校门口",
+      "taskContent": "从北校区门口帮搬行李到北校区宿舍1号楼3层，行李有2个大箱子",
+      "reward": 30,
+      "expectedTime": "2024-06-28T10:00:00Z",
+      "tags": [
+        "跑腿",
+        "搬行李",
+        "开学"
+      ],
+      "images": [],
+      "status": "active",
+      "viewCount": 89,
+      "replyCount": 12,
+      "createdAt": "2024-06-26T08:00:00Z",
+      "publisher": {
+        "id": "N08SJPUoCgY",
+        "nickname": "yy"
+      }
     }
   ],
   "favorites": [],

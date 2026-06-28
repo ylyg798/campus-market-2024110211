@@ -106,6 +106,63 @@ export const useMarketStore = defineStore('market', () => {
     }
   }
 
+  async function acceptTask(taskId: string, userId: string, nickname: string) {
+    try {
+      const response = await api.patch(`/infos/${taskId}`, {
+        status: 'claimed',
+        assignee: {
+          id: userId,
+          nickname: nickname,
+          acceptedAt: new Date().toISOString(),
+        },
+        updatedAt: new Date().toISOString(),
+      })
+      
+      if (currentInfo.value && currentInfo.value.id === taskId) {
+        currentInfo.value = response.data
+      }
+      
+      const index = marketList.value.findIndex(item => item.id === taskId)
+      if (index !== -1) {
+        marketList.value[index] = response.data
+      }
+      
+      return response.data
+    } catch (error) {
+      console.error('接受任务失败:', error)
+      throw error
+    }
+  }
+
+  async function updateTaskStatus(taskId: string, status: 'active' | 'in-progress' | 'completed' | 'closed', taskProgress?: string) {
+    try {
+      const updateData: any = {
+        status,
+        updatedAt: new Date().toISOString(),
+      }
+      
+      if (taskProgress) {
+        updateData.taskProgress = taskProgress
+      }
+      
+      const response = await api.patch(`/infos/${taskId}`, updateData)
+      
+      if (currentInfo.value && currentInfo.value.id === taskId) {
+        currentInfo.value = response.data
+      }
+      
+      const index = marketList.value.findIndex(item => item.id === taskId)
+      if (index !== -1) {
+        marketList.value[index] = response.data
+      }
+      
+      return response.data
+    } catch (error) {
+      console.error('更新任务状态失败:', error)
+      throw error
+    }
+  }
+
   function setFilter(newFilter: Partial<{ type: InfoType; campus: string; keyword: string }>) {
     filter.value = { ...filter.value, ...newFilter }
   }
@@ -121,6 +178,8 @@ export const useMarketStore = defineStore('market', () => {
     fetchMarketList,
     fetchMarketInfo,
     publishInfo,
+    acceptTask,
+    updateTaskStatus,
     setFilter,
   }
 })

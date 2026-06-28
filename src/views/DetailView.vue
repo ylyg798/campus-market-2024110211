@@ -4,7 +4,7 @@ import { useMarketStore } from '@/stores/marketStore';
 import { useFavoriteStore } from '@/stores/favoriteStore';
 import { useUserStore } from '@/stores/userStore';
 import { useMessageStore } from '@/stores/messageStore';
-import type { InfoType } from '@/types/market';
+import type { InfoType, InfoStatus } from '@/types/market';
 const router = useRouter();
 const route = useRoute();
 const marketStore = useMarketStore();
@@ -15,6 +15,9 @@ const isFavorite = ref(false);
 const showBargainModal = ref(false);
 const bargainOffer = ref('');
 const bargainResult = ref('');
+const showStatusModal = ref(false);
+const selectedStatus = ref<InfoStatus>('active');
+const taskProgressText = ref('');
 const infoTypes: {
  type: InfoType;
  label: string;
@@ -32,7 +35,29 @@ const qualityLabels: Record<string, string> = {
  'fair': '有使用痕迹',
  'poor': '成色较差',
 };
+const statusLabels: Record<string, string> = {
+ 'active': '待接取',
+ 'claimed': '已接取',
+ 'in-progress': '进行中',
+ 'completed': '已完成',
+ 'closed': '已关闭',
+};
 const currentInfo = computed(() => marketStore.currentInfo);
+const canAcceptTask = computed(() => {
+ if (!currentInfo.value || !userStore.user) return false;
+ if (currentInfo.value.type !== 'errand') return false;
+ if (currentInfo.value.status !== 'active') return false;
+ if (currentInfo.value.publisher.id === userStore.user.id) return false;
+ return true;
+});
+const isTaskPublisher = computed(() => {
+ if (!currentInfo.value || !userStore.user) return false;
+ return currentInfo.value.publisher.id === userStore.user.id;
+});
+const isTaskAssignee = computed(() => {
+ if (!currentInfo.value || !userStore.user) return false;
+ return currentInfo.value.assignee?.id === userStore.user.id;
+});
 function getTypeName(type: InfoType) {
  return infoTypes.find(t => t.type === type)?.label || type;
 }
@@ -78,6 +103,38 @@ function submitBargain() {
 }
 function closeBargain() {
  showBargainModal.value = false;
+}
+async function acceptTask() {
+ if (!canAcceptTask.value || !userStore.user) return;
+ try {
+ await marketStore.acceptTask(currentInfo.value!.id, userStore.user.id, userStore.user.nickname);
+ alert('成功接取任务！请与发布者联系确认细节。');
+ } catch (error) {
+ alert('接取任务失败，请稍后重试');
+ }
+}
+function openStatusModal() {
+ if (!currentInfo.value) return;
+ selectedStatus.value = currentInfo.value.status;
+ taskProgressText.value = currentInfo.value.taskProgress || '';
+ showStatusModal.value = true;
+}
+async function updateTaskStatus() {
+ if (!currentInfo.value) return;
+ try {
+ await marketStore.updateTaskStatus(
+ currentInfo.value.id,
+ selectedStatus.value,
+ taskProgressText.value
+ );
+ showStatusModal.value = false;
+ alert('任务状态已更新');
+ } catch (error) {
+ alert('更新失败，请稍后重试');
+ }
+}
+function closeStatusModal() {
+ showStatusModal.value = false;
 }
 async function fetchData() {
  const id = route.params.id as string;
@@ -185,6 +242,12 @@ onMounted(() => {
         </div>
 
         <div class="special-fields" v-if="currentInfo.type === 'errand'">
+          <div class="field-row">
+            <span class="field-label">任务状态</span>
+            <span class="field-value task-status" :class="currentInfo.status">
+              {{ statusLabels[currentInfo.status] || currentInfo.status }}
+            </span>
+          </div>
           <div class="field-row" v-if="currentInfo.taskContent">
             <span class="field-label">任务内容</span>
             <span class="field-value">{{ currentInfo.taskContent }}</span>
@@ -196,6 +259,49 @@ onMounted(() => {
           <div class="field-row" v-if="currentInfo.expectedTime">
             <span class="field-label">期望完成时间</span>
             <span class="field-value">{{ formatTime(currentInfo.expectedTime) }}</span>
+          </div>
+
+          <!-- 任务接取者信息 -->
+          <div class="assignee-section" v-if="currentInfo.assignee">
+            <div class="assignee-header">
+              <span class="assignee-icon">✅</span>
+              <span class="assignee-title">已由同学接取</span>
+            </div>
+            <div class="assignee-info">
+              <div class="assignee-avatar">
+                <span>👤</span>
+              </div>
+              <div class="assignee-details">
+                <div class="assignee-name">{{ currentInfo.assignee.nickname }}</div>
+                <div class="assignee-time">接取时间：{{ formatTime(currentInfo.assignee.acceptedAt) }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 任务进度 -->
+          <div class="task-progress-section" v-if="currentInfo.taskProgress">
+            <div class="progress-header">
+              <span class="progress-icon">📝</span>
+              <span class="progress-title">任务进度</span>
+            </div>
+            <div class="progress-content">{{ currentInfo.taskProgress }}</div>
+          </div>
+
+          <!-- 任务管理按钮 -->
+          <div class="task-actions" v-if="currentInfo.type === 'errand'">
+            <!-- 接任务按钮 -->
+            <button v-if="canAcceptTask" class="accept-task-btn" @click="acceptTask()">
+              🎯 接受任务
+            </button>
+
+            <!-- 状态管理按钮 -->
+            <button
+              v-if="isTaskPublisher || isTaskAssignee"
+              class="update-status-btn"
+              @click="openStatusModal()"
+            >
+              🔄 更新任务状态
+            </button>
           </div>
         </div>
 
@@ -280,6 +386,46 @@ onMounted(() => {
         <div class="modal-footer">
           <button class="cancel-btn" @click="closeBargain()">取消</button>
           <button class="submit-btn" @click="submitBargain()">提交出价</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 任务状态更新模态框 -->
+    <div v-if="showStatusModal" class="modal-overlay" @click="closeStatusModal()">
+      <div class="modal-content" @click.stop>
+        <div class="modal-header">
+          <h3>🔄 更新任务状态</h3>
+          <button class="close-btn" @click="closeStatusModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="status-options">
+            <label class="status-label">选择任务状态：</label>
+            <div class="status-grid">
+              <button
+                v-for="(label, status) in statusLabels"
+                :key="status"
+                class="status-option"
+                :class="{ active: selectedStatus === status }"
+                @click="selectedStatus = status as InfoStatus"
+              >
+                {{ label }}
+              </button>
+            </div>
+          </div>
+
+          <div class="progress-input-section">
+            <label class="progress-label">任务进度描述：</label>
+            <textarea
+              v-model="taskProgressText"
+              placeholder="描述当前任务进展情况（可选）"
+              class="progress-textarea"
+              rows="3"
+            ></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="cancel-btn" @click="closeStatusModal()">取消</button>
+          <button class="submit-btn" @click="updateTaskStatus()">确认更新</button>
         </div>
       </div>
     </div>
@@ -839,5 +985,233 @@ onMounted(() => {
   font-size: 15px;
   font-weight: 500;
   cursor: pointer;
+}
+
+/* 跑腿委托任务样式 */
+.task-status {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.task-status.active {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.task-status.claimed {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.task-status.in-progress {
+  background: #fce7f3;
+  color: #9f1239;
+}
+
+.task-status.completed {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.task-status.closed {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.assignee-section {
+  margin-top: 16px;
+  padding: 12px;
+  background: #f0fdf4;
+  border-radius: 12px;
+  border: 1px solid #86efac;
+}
+
+.assignee-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.assignee-icon {
+  font-size: 18px;
+}
+
+.assignee-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #059669;
+}
+
+.assignee-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.assignee-avatar {
+  width: 40px;
+  height: 40px;
+  background: #d1fae5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.assignee-details {
+  flex: 1;
+}
+
+.assignee-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.assignee-time {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.task-progress-section {
+  margin-top: 16px;
+  padding: 12px;
+  background: #fef3c7;
+  border-radius: 12px;
+  border: 1px solid #fcd34d;
+}
+
+.progress-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.progress-icon {
+  font-size: 16px;
+}
+
+.progress-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #92400e;
+}
+
+.progress-content {
+  font-size: 13px;
+  color: #78350f;
+  line-height: 1.6;
+}
+
+.task-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+}
+
+.accept-task-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.accept-task-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.update-status-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.update-status-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+/* 任务状态更新模态框样式 */
+.status-options {
+  margin-bottom: 20px;
+}
+
+.status-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.status-option {
+  padding: 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.status-option.active {
+  border-color: #10b981;
+  color: #10b981;
+  background: #f0fdf4;
+  font-weight: 600;
+}
+
+.progress-input-section {
+  margin-top: 20px;
+}
+
+.progress-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.progress-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.progress-textarea:focus {
+  border-color: #10b981;
 }
 </style>

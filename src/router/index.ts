@@ -52,6 +52,12 @@ const router = createRouter({
       component: () => import('@/views/TrendsView.vue'),
       meta: { requiresAuth: true },
     },
+    {
+      path: '/errands',
+      name: 'errands',
+      component: () => import('@/views/ErrandsView.vue'),
+      meta: { requiresAuth: true },
+    },
   ],
 })
 

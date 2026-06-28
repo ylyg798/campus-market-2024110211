@@ -1,10 +1,17 @@
 export type InfoType = 'secondhand' | 'lostfound' | 'groupbuy' | 'errand'
-export type InfoStatus = 'active' | 'completed' | 'closed' | 'claimed' | 'found'
+export type InfoStatus = 'active' | 'completed' | 'closed' | 'claimed' | 'found' | 'in-progress'
 
 export interface Publisher {
   id: string
   nickname: string
   avatar?: string
+}
+
+export interface TaskAssignee {
+  id: string
+  nickname: string
+  avatar?: string
+  acceptedAt: string
 }
 
 export interface MarketInfo {
@@ -19,6 +26,7 @@ export interface MarketInfo {
   status: InfoStatus
   publisher: Publisher
   createdAt: string
+  updatedAt?: string
   viewCount: number
   favoriteCount: number
   
@@ -35,6 +43,8 @@ export interface MarketInfo {
   taskContent?: string
   expectedTime?: string
   reward?: number
+  assignee?: TaskAssignee
+  taskProgress?: string
 }
 
 export interface FilterOptions {
