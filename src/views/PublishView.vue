@@ -7,6 +7,7 @@ const router = useRouter();
 const marketStore = useMarketStore();
 const userStore = useUserStore();
 const selectedType = ref<InfoType>('secondhand');
+const alert = (msg: string) => window.alert(msg);
 const form = ref({
  title: '',
  description: '',
@@ -59,7 +60,7 @@ const canSubmit = computed(() => {
 function handleSubmit() {
  if (!canSubmit.value || !userStore.user)
  return;
- const infoData: Omit<MarketInfo, 'id' | 'createdAt' | 'publisher' | 'status' | 'viewCount' | 'replyCount'> = {
+ const infoData: Omit<MarketInfo, 'id' | 'createdAt' | 'publisher' | 'status' | 'viewCount' | 'favoriteCount'> = {
  title: form.value.title,
  description: form.value.description,
  type: selectedType.value,
@@ -70,10 +71,10 @@ function handleSubmit() {
  };
  if (selectedType.value === 'secondhand') {
  infoData.price = parseFloat(form.value.price);
- infoData.quality = form.value.quality;
+ infoData.quality = form.value.quality as 'new' | 'like-new' | 'good' | 'fair' | 'poor';
  }
  if (selectedType.value === 'lostfound') {
- infoData.lostFoundType = form.value.lostFoundType;
+ infoData.lostFoundType = form.value.lostFoundType as 'lost' | 'found';
  infoData.itemFeatures = form.value.itemFeatures;
  infoData.reward = form.value.reward ? parseFloat(form.value.reward) : undefined;
  }

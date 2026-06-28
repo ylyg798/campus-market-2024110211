@@ -18,11 +18,11 @@ export const marketApi = {
       params._order = sort.order
     }
 
-    return api.get('/market', { params })
+    return api.get('/market', { params }).then(res => res.data)
   },
 
   getMarketInfo(id: string): Promise<MarketInfo> {
-    return api.get(`/market/${id}`)
+    return api.get(`/market/${id}`).then(res => res.data)
   },
 
   createMarketInfo(data: Omit<MarketInfo, 'id' | 'createdAt' | 'viewCount' | 'favoriteCount'>): Promise<MarketInfo> {
@@ -31,16 +31,17 @@ export const marketApi = {
       createdAt: new Date().toISOString(),
       viewCount: 0,
       favoriteCount: 0,
-    })
+    }).then(res => res.data)
   },
 
   updateMarketInfo(id: string, data: Partial<MarketInfo>): Promise<MarketInfo> {
-    return api.patch(`/market/${id}`, data)
+    return api.patch(`/market/${id}`, data).then(res => res.data)
   },
 
   incrementViewCount(id: string): Promise<MarketInfo> {
-    return api.get(`/market/${id}`).then(item => {
-      return api.patch(`/market/${id}`, { viewCount: (item.viewCount || 0) + 1 })
+    return api.get(`/market/${id}`).then(res => {
+      const item = res.data as MarketInfo
+      return api.patch(`/market/${id}`, { viewCount: (item.viewCount || 0) + 1 }).then(res => res.data)
     })
   },
 }

@@ -12,7 +12,7 @@ const userStore = useUserStore()
 const selectedType = ref<InfoType | 'all'>('all')
 const searchKeyword = ref('')
 
-const infoTypes = [
+const infoTypes: { type: InfoType | 'all'; label: string; icon: string }[] = [
   { type: 'all', label: '全部', icon: '📋' },
   { type: 'secondhand', label: '二手交易', icon: '🛒' },
   { type: 'lostfound', label: '失物招领', icon: '🔍' },
@@ -22,14 +22,14 @@ const infoTypes = [
 
 const filteredList = computed(() => {
   if (!marketStore.marketList) return []
-  
+
   let list = [...marketStore.marketList]
-  
+
   // 按类型过滤
   if (selectedType.value !== 'all') {
     list = list.filter(item => item.type === selectedType.value)
   }
-  
+
   // 搜索关键词过滤
   if (searchKeyword.value) {
     const keyword = searchKeyword.value.toLowerCase()
@@ -39,7 +39,7 @@ const filteredList = computed(() => {
       item.tags.some(tag => tag.toLowerCase().includes(keyword))
     )
   }
-  
+
   return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 })
 
@@ -88,7 +88,7 @@ onMounted(() => {
       <!-- 搜索栏 -->
       <div class="search-section">
         <div class="search-bar">
-          <input 
+          <input
             v-model="searchKeyword"
             type="text"
             placeholder="搜索信息..."
@@ -100,7 +100,7 @@ onMounted(() => {
       <!-- 类型筛选 -->
       <div class="filter-section">
         <div class="filter-tabs">
-          <button 
+          <button
             v-for="item in infoTypes"
             :key="item.type"
             class="filter-tab"
@@ -121,7 +121,7 @@ onMounted(() => {
           <button class="empty-btn" @click="router.push('/publish')">发布信息</button>
         </div>
 
-        <div 
+        <div
           v-for="item in filteredList"
           :key="item.id"
           class="list-item"
@@ -342,7 +342,7 @@ onMounted(() => {
 
 .item-type-badge {
   display: flex;
-  align-items:: center;
+  align-items: center;
   gap: 6px;
   padding: 4px 12px;
   background: #f0fdf4;

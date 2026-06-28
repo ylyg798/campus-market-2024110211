@@ -49,7 +49,7 @@ const router = createRouter({
     {
       path: '/message',
       name: 'message',
-      component: () => import('@/views/MessagesView.vue'),
+      component: () => import('@/views/MessageView.vue'),
       meta: { requiresAuth: true },
     },
     {

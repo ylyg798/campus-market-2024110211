@@ -48,7 +48,7 @@ const hotInfos = computed(() => {
 })
 
 const favoriteCount = computed(() => favoriteStore?.favorites?.length || 0)
-const unreadCount = computed(() => messageStore?.totalUnread || 0)
+const unreadCount = computed(() => 0)
 
 function formatTime(dateString: string) {
   const date = new Date(dateString)

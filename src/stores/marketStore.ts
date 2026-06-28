@@ -84,14 +84,14 @@ export const useMarketStore = defineStore('market', () => {
     }
   }
 
-  async function publishInfo(info: Omit<MarketInfo, 'id' | 'createdAt' | 'publisher' | 'status' | 'viewCount' | 'replyCount'>) {
+  async function publishInfo(info: Omit<MarketInfo, 'id' | 'createdAt' | 'publisher' | 'status' | 'viewCount' | 'favoriteCount'>) {
     isLoading.value = true
     try {
       const response = await api.post('/infos', {
         ...info,
         status: 'active',
         viewCount: 0,
-        replyCount: 0,
+        favoriteCount: 0,
         createdAt: new Date().toISOString(),
         publisher: {
           id: '1',
@@ -117,16 +117,16 @@ export const useMarketStore = defineStore('market', () => {
         },
         updatedAt: new Date().toISOString(),
       })
-      
+
       if (currentInfo.value && currentInfo.value.id === taskId) {
         currentInfo.value = response.data
       }
-      
+
       const index = marketList.value.findIndex(item => item.id === taskId)
       if (index !== -1) {
         marketList.value[index] = response.data
       }
-      
+
       return response.data
     } catch (error) {
       console.error('接受任务失败:', error)
@@ -134,28 +134,28 @@ export const useMarketStore = defineStore('market', () => {
     }
   }
 
-  async function updateTaskStatus(taskId: string, status: 'active' | 'in-progress' | 'completed' | 'closed', taskProgress?: string) {
+  async function updateTaskStatus(taskId: string, status: 'active' | 'claimed' | 'in-progress' | 'completed' | 'closed', taskProgress?: string) {
     try {
       const updateData: any = {
         status,
         updatedAt: new Date().toISOString(),
       }
-      
+
       if (taskProgress) {
         updateData.taskProgress = taskProgress
       }
-      
+
       const response = await api.patch(`/infos/${taskId}`, updateData)
-      
+
       if (currentInfo.value && currentInfo.value.id === taskId) {
         currentInfo.value = response.data
       }
-      
+
       const index = marketList.value.findIndex(item => item.id === taskId)
       if (index !== -1) {
         marketList.value[index] = response.data
       }
-      
+
       return response.data
     } catch (error) {
       console.error('更新任务状态失败:', error)

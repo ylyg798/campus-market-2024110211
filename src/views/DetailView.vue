@@ -16,7 +16,7 @@ const showBargainModal = ref(false);
 const bargainOffer = ref('');
 const bargainResult = ref('');
 const showStatusModal = ref(false);
-const selectedStatus = ref<InfoStatus>('active');
+const selectedStatus = ref<'active' | 'claimed' | 'in-progress' | 'completed' | 'closed'>('active');
 const taskProgressText = ref('');
 const infoTypes: {
  type: InfoType;
@@ -115,7 +115,7 @@ async function acceptTask() {
 }
 function openStatusModal() {
  if (!currentInfo.value) return;
- selectedStatus.value = currentInfo.value.status;
+ selectedStatus.value = currentInfo.value.status as 'active' | 'claimed' | 'in-progress' | 'completed' | 'closed';
  taskProgressText.value = currentInfo.value.taskProgress || '';
  showStatusModal.value = true;
 }
@@ -233,7 +233,7 @@ onMounted(() => {
             <span class="field-value">{{ currentInfo.currentCount }}/{{ currentInfo.targetCount }} 人</span>
           </div>
           <div class="progress-bar">
-            <div class="progress-fill" :style="{ width: `${(currentInfo.currentCount / currentInfo.targetCount) * 100}%` }"></div>
+            <div class="progress-fill" :style="{ width: `${((currentInfo.currentCount || 0) / (currentInfo.targetCount || 1)) * 100}%` }"></div>
           </div>
           <div class="field-row" v-if="currentInfo.deadline">
             <span class="field-label">截止时间</span>
@@ -406,7 +406,7 @@ onMounted(() => {
                 :key="status"
                 class="status-option"
                 :class="{ active: selectedStatus === status }"
-                @click="selectedStatus = status as InfoStatus"
+                @click="selectedStatus = status as 'active' | 'claimed' | 'in-progress' | 'completed' | 'closed'"
               >
                 {{ label }}
               </button>

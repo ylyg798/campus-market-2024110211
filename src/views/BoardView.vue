@@ -10,7 +10,6 @@ import {
   List,
   TrendingUp,
   Home,
-  ProfileIcon,
   RefreshCw,
   ArrowLeft
 } from '@lucide/vue'

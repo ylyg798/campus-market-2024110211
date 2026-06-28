@@ -65,7 +65,7 @@ function formatTime(dateString: string) {
           </div>
           <div class="trend-footer">
             <span class="trend-likes">👍 {{ Math.floor(Math.random() * 100) }}</span>
-            <span class="trend-comments">💬 {{ trend.replyCount || 0 }}</span>
+            <span class="trend-comments">💬 {{ Math.floor(Math.random() * 20) }}</span>
           </div>
         </div>
       </div>

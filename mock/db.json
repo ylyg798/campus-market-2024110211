@@ -35,6 +35,15 @@
       "creditScore": 850,
       "createdAt": "2026-06-27T14:25:14.979Z",
       "id": "N08SJPUoCgY"
+    },
+    {
+      "nickname": "小明",
+      "college": "计算机学院",
+      "campus": "南校区",
+      "role": "student",
+      "creditScore": 830,
+      "createdAt": "2026-06-28T06:32:24.159Z",
+      "id": "y-eoOM3JtSI"
     }
   ],
   "infos": [
