@@ -2,6 +2,7 @@
 import { onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
+import { Home, List, BarChart2, PenTool, MessageCircle, User } from '@lucide/vue'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -13,12 +14,12 @@ onMounted(() => {
 })
 
 const navItems = [
-  { path: '/home', label: '首页', icon: '🏠' },
-  { path: '/list', label: '列表', icon: '📋' },
-  { path: '/board', label: '看板', icon: '📊' },
-  { path: '/publish', label: '发布', icon: '✏️' },
-  { path: '/message', label: '消息', icon: '💬' },
-  { path: '/profile', label: '我的', icon: '👤' },
+  { path: '/home', label: '首页', icon: Home },
+  { path: '/list', label: '列表', icon: List },
+  { path: '/board', label: '看板', icon: BarChart2 },
+  { path: '/publish', label: '发布', icon: PenTool },
+  { path: '/message', label: '消息', icon: MessageCircle },
+  { path: '/profile', label: '我的', icon: User },
 ]
 </script>
 
@@ -39,7 +40,7 @@ const navItems = [
             class="nav-link"
             :class="{ active: router.currentRoute.value.path === item.path }"
           >
-            <span class="nav-icon">{{ item.icon }}</span>
+            <component :is="item.icon" :size="16" class="nav-icon" />
             <span class="nav-label">{{ item.label }}</span>
           </RouterLink>
         </div>
@@ -132,7 +133,8 @@ body {
 }
 
 .nav-icon {
-  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .nav-label {

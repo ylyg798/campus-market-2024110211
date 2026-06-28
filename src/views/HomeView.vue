@@ -6,6 +6,24 @@ import { useMarketStore } from '@/stores/marketStore'
 import { useFavoriteStore } from '@/stores/favoriteStore'
 import { useMessageStore } from '@/stores/messageStore'
 import type { MarketInfo, InfoType } from '@/types/market'
+import type { Component } from 'vue'
+import {
+  ShoppingCart,
+  Search,
+  Users,
+  PersonStanding,
+  MessageCircle,
+  Heart,
+  Plus,
+  Home,
+  List,
+  BarChart2,
+  User,
+  Star,
+  Eye,
+  MapPin,
+  Lock
+} from '@lucide/vue'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -15,11 +33,11 @@ const messageStore = useMessageStore()
 
 const isLoading = ref(true)
 
-const infoTypes: { type: InfoType; label: string; icon: string }[] = [
-  { type: 'secondhand', label: '二手交易', icon: '🛒' },
-  { type: 'lostfound', label: '失物招领', icon: '🔍' },
-  { type: 'groupbuy', label: '拼单搭子', icon: '🤝' },
-  { type: 'errand', label: '跑腿委托', icon: '🚶' },
+const infoTypes: { type: InfoType; label: string; icon: Component }[] = [
+  { type: 'secondhand', label: '二手交易', icon: ShoppingCart },
+  { type: 'lostfound', label: '失物招领', icon: Search },
+  { type: 'groupbuy', label: '拼单搭子', icon: Users },
+  { type: 'errand', label: '跑腿委托', icon: PersonStanding },
 ]
 
 const latestInfos = computed(() => marketStore.filteredList.slice(0, 5))
@@ -48,8 +66,8 @@ function getTypeName(type: InfoType) {
   return infoTypes.find(t => t.type === type)?.label || type
 }
 
-function getTypeIcon(type: InfoType) {
-  return infoTypes.find(t => t.type === type)?.icon || '📋'
+function getTypeIcon(type: InfoType): Component {
+  return infoTypes.find(t => t.type === type)?.icon || List
 }
 
 function goToMarket(type?: InfoType) {
@@ -90,7 +108,7 @@ onMounted(() => {
       </div>
       <div class="header-right">
         <div class="credit-badge">
-          <span class="credit-icon">⭐</span>
+          <Star :size="14" class="credit-icon" />
           <span>{{ userStore.user?.creditScore || 100 }}</span>
         </div>
       </div>
@@ -106,7 +124,7 @@ onMounted(() => {
             class="entry-card"
             @click="goToMarket(item.type)"
           >
-            <span class="entry-icon">{{ item.icon }}</span>
+            <component :is="item.icon" :size="24" class="entry-icon" />
             <span class="entry-label">{{ item.label }}</span>
           </div>
         </div>
@@ -115,14 +133,17 @@ onMounted(() => {
       <!-- 快捷操作 -->
       <section class="quick-actions">
         <button class="action-btn" @click="router.push('/messages')">
-          💬 消息
+          <MessageCircle :size="16" />
+          消息
           <span v-if="unreadCount > 0" class="badge">{{ unreadCount }}</span>
         </button>
         <button class="action-btn" @click="router.push('/profile')">
-          ❤️ 收藏 {{ favoriteCount }}
+          <Heart :size="16" />
+          收藏 {{ favoriteCount }}
         </button>
         <button class="action-btn primary" @click="router.push('/publish')">
-          + 发布信息
+          <Plus :size="16" />
+          发布信息
         </button>
       </section>
 
@@ -141,7 +162,7 @@ onMounted(() => {
             @click="goToDetail(info.id)"
           >
             <div class="info-left">
-              <span class="type-icon">{{ getTypeIcon(info.type) }}</span>
+              <component :is="getTypeIcon(info.type)" :size="20" class="type-icon" />
               <div class="info-content">
                 <h3>{{ info.title }}</h3>
                 <p class="info-meta">
@@ -176,11 +197,11 @@ onMounted(() => {
           >
             <div class="info-left">
               <span class="rank" :class="{ top: index < 3 }">{{ index + 1 }}</span>
-              <span class="type-icon">{{ getTypeIcon(info.type) }}</span>
+              <component :is="getTypeIcon(info.type)" :size="20" class="type-icon" />
               <div class="info-content">
                 <h3>{{ info.title }}</h3>
                 <p class="info-meta">
-                  👁️ {{ info.viewCount }}次浏览 · {{ info.campus }}
+                  <Eye :size="12" /> {{ info.viewCount }}次浏览 · {{ info.campus }}
                 </p>
               </div>
             </div>
@@ -199,33 +220,33 @@ onMounted(() => {
       <section class="safety-tips">
         <h3>安全提示</h3>
         <ul>
-          <li>📍 选择公共地点交易</li>
-          <li>🔍 贵重物品当面验真</li>
-          <li>🔒 保护个人隐私信息</li>
+          <li><MapPin :size="14" /> 选择公共地点交易</li>
+          <li><Search :size="14" /> 贵重物品当面验真</li>
+          <li><Lock :size="14" /> 保护个人隐私信息</li>
         </ul>
       </section>
     </main>
 
     <nav class="bottom-nav">
       <button class="nav-item active" @click="router.push('/')">
-        <span>🏠</span>
+        <Home :size="20" />
         <span>首页</span>
       </button>
       <button class="nav-item" @click="router.push('/list')">
-        <span>📋</span>
+        <List :size="20" />
         <span>列表</span>
       </button>
       <button class="nav-item" @click="router.push('/board')">
-        <span>📊</span>
+        <BarChart2 :size="20" />
         <span>看板</span>
       </button>
       <button class="nav-item" @click="router.push('/message')">
-        <span>💬</span>
+        <MessageCircle :size="20" />
         <span>消息</span>
         <span v-if="unreadCount > 0" class="badge">{{ unreadCount }}</span>
       </button>
       <button class="nav-item" @click="router.push('/profile')">
-        <span>👤</span>
+        <User :size="20" />
         <span>我的</span>
       </button>
     </nav>
@@ -272,7 +293,7 @@ onMounted(() => {
 }
 
 .credit-icon {
-  font-size: 14px;
+  display: inline-flex;
 }
 
 .home-main {
@@ -308,8 +329,7 @@ onMounted(() => {
 }
 
 .entry-icon {
-  font-size: 24px;
-  display: block;
+  display: inline-flex;
   margin-bottom: 8px;
 }
 
@@ -335,6 +355,9 @@ onMounted(() => {
   color: #333;
   cursor: pointer;
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .action-btn.primary {
@@ -415,7 +438,7 @@ onMounted(() => {
 }
 
 .type-icon {
-  font-size: 20px;
+  display: inline-flex;
 }
 
 .rank {
@@ -500,6 +523,9 @@ onMounted(() => {
   color: #666;
   padding: 6px 0;
   border-bottom: 1px solid #f5f5f5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .safety-tips li:last-child {

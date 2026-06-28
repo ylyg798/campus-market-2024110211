@@ -11,6 +11,7 @@
     "mock": "json-server --watch mock/db.json --port 3000 --host localhost"
   },
   "dependencies": {
+    "@lucide/vue": "^1.21.0",
     "axios": "^1.18.1",
     "json-server": "^1.0.0-beta.15",
     "pinia": "^3.0.4",

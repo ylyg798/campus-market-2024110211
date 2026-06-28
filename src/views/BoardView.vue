@@ -3,6 +3,17 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMarketStore } from '@/stores/marketStore'
 import { useUserStore } from '@/stores/userStore'
+import {
+  User,
+  Star,
+  BarChart2,
+  List,
+  TrendingUp,
+  Home,
+  ProfileIcon,
+  RefreshCw,
+  ArrowLeft
+} from '@lucide/vue'
 
 const router = useRouter()
 const marketStore = useMarketStore()
@@ -25,7 +36,7 @@ const stats = computed(() => {
   }
 
   const list = marketStore.marketList
-  
+
   const total = list.length
   const active = list.filter(item => item.status === 'active').length
   const completed = list.filter(item => item.status === 'completed').length
@@ -35,7 +46,7 @@ const stats = computed(() => {
   const errand = list.filter(item => item.type === 'errand').length
   const totalViews = list.reduce((sum, item) => sum + item.viewCount, 0)
   const avgViews = total > 0 ? Math.round(totalViews / total) : 0
-  
+
   return {
     total,
     active,
