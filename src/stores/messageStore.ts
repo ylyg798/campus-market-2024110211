@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { api } from '@/api/config'
 
+export type MessageType = 'text' | 'image' | 'bargain'
+
 export interface Conversation {
   id: string
   userId: string
@@ -21,6 +23,7 @@ export interface Message {
   conversationId: string
   senderId: string
   content: string
+  type?: MessageType
   createdAt: string
 }
 

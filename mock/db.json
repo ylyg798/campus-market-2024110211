@@ -53,6 +53,15 @@
       "creditScore": 843,
       "createdAt": "2026-06-28T07:01:47.952Z",
       "id": "zTo-5sr3KF0"
+    },
+    {
+      "nickname": "cc",
+      "college": "其他",
+      "campus": "西校区",
+      "role": "student",
+      "creditScore": 862,
+      "createdAt": "2026-06-29T03:16:02.770Z",
+      "id": "yv5S3bIBjQo"
     }
   ],
   "infos": [
@@ -418,6 +427,29 @@
         "nickname": "测试用户"
       },
       "id": "JSbRyqwymsU"
+    },
+    {
+      "title": "剪映VIP拼单",
+      "description": "速速联系",
+      "type": "groupbuy",
+      "campus": "北校区",
+      "location": "校内",
+      "tags": [
+        "拼单"
+      ],
+      "images": [],
+      "currentCount": 1,
+      "targetCount": 3,
+      "deadline": "2026-06-30T11:18",
+      "status": "active",
+      "viewCount": 0,
+      "favoriteCount": 0,
+      "createdAt": "2026-06-29T03:18:41.346Z",
+      "publisher": {
+        "id": "1",
+        "nickname": "测试用户"
+      },
+      "id": "k3VJO1Sfah8"
     }
   ],
   "favorites": [],

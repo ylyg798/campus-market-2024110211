@@ -54,7 +54,7 @@ const user = computed(() => userStore.user)
 
 const myPosts = computed(() => {
   if (!user.value) return []
-  return marketStore.marketList.filter(item => item.publisher?.id === user.value.id)
+  return marketStore.marketList.filter(item => item.publisher?.id === user.value?.id)
 })
 
 const filteredPosts = computed(() => {

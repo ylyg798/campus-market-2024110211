@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useMessageStore } from '@/stores/messageStore'
+import { useMessageStore, type Message } from '@/stores/messageStore'
 import { useUserStore } from '@/stores/userStore'
-import type { Message } from '@/types/message'
 import { ArrowLeft, Send, MoreVertical, User, Image, Paperclip, Smile, Phone, Video } from '@lucide/vue'
 
 const route = useRoute()
@@ -13,7 +12,7 @@ const userStore = useUserStore()
 
 const conversationId = computed(() => route.params.id as string)
 const conversation = computed(() => messageStore.conversations.find(c => c.id === conversationId.value))
-const messages = computed(() => messageStore.getMessages(conversationId.value))
+const messages = computed(() => messageStore.messages)
 
 const messageInput = ref('')
 const messagesContainer = ref<HTMLElement | null>(null)
@@ -41,7 +40,7 @@ function formatDate(dateString: string) {
   const today = new Date()
   const yesterday = new Date(today)
   yesterday.setDate(yesterday.getDate() - 1)
-  
+
   if (date.toDateString() === today.toDateString()) {
     return '今天'
   } else if (date.toDateString() === yesterday.toDateString()) {
@@ -53,12 +52,12 @@ function formatDate(dateString: string) {
 
 async function sendMessage() {
   if (!messageInput.value.trim() || !conversationId.value) return
-  
+
   const content = messageInput.value.trim()
   messageInput.value = ''
-  
+
   await messageStore.sendMessage(conversationId.value, content, 'text')
-  
+
   // 滚动到底部
   await nextTick()
   scrollToBottom()
@@ -95,24 +94,22 @@ onMounted(() => {
       <button class="back-btn" @click="goBack()">
         <ArrowLeft :size="20" />
       </button>
-      
+
       <div class="header-info">
         <div class="avatar">
-          <img v-if="otherParty?.avatar" :src="otherParty.avatar" :alt="otherParty.nickname" />
-          <div v-else class="avatar-placeholder">
+          <div class="avatar-placeholder">
             <User :size="20" />
           </div>
         </div>
         <div class="user-info">
           <h3 class="user-name">{{ otherParty?.nickname || '用户' }}</h3>
-          <span class="online-status" v-if="conversation?.otherPartyOnline">在线</span>
         </div>
       </div>
-      
+
       <button class="more-btn" @click="showMoreOptions = !showMoreOptions">
         <MoreVertical :size="20" />
       </button>
-      
+
       <!-- 更多选项菜单 -->
       <div v-if="showMoreOptions" class="more-menu">
         <button class="menu-item">
@@ -138,29 +135,28 @@ onMounted(() => {
       </div>
 
       <div v-else class="messages-list">
-        <div 
-          v-for="(msg, index) in messages" 
+        <div
+          v-for="(msg, index) in messages"
           :key="msg.id"
           class="message-item"
-          :class="{ my-message: isMyMessage(msg) }"
+          :class="{ 'my-message': isMyMessage(msg) }"
         >
           <!-- 日期分隔 -->
-          <div 
-            v-if="index === 0 || formatDate(msg.createdAt) !== formatDate(messages[index - 1].createdAt)"
+          <div
+            v-if="index === 0 || formatDate(msg.createdAt) !== formatDate(messages[index - 1]?.createdAt || '')"
             class="date-separator"
           >
             {{ formatDate(msg.createdAt) }}
           </div>
-          
+
           <!-- 消息内容 -->
           <div class="message-wrapper">
             <div v-if="!isMyMessage(msg)" class="message-avatar">
-              <img v-if="otherParty?.avatar" :src="otherParty.avatar" />
-              <div v-else class="avatar-placeholder">
+              <div class="avatar-placeholder">
                 <User :size="16" />
               </div>
             </div>
-            
+
             <div class="message-content">
               <div class="message-bubble" :class="{ mine: isMyMessage(msg) }">
                 <p v-if="msg.type === 'text'">{{ msg.content }}</p>
@@ -168,10 +164,9 @@ onMounted(() => {
               </div>
               <span class="message-time">{{ formatTime(msg.createdAt) }}</span>
             </div>
-            
+
             <div v-if="isMyMessage(msg)" class="message-avatar">
-              <img v-if="currentUser?.avatar" :src="currentUser.avatar" />
-              <div v-else class="avatar-placeholder">
+              <div class="avatar-placeholder">
                 <User :size="16" />
               </div>
             </div>
@@ -193,17 +188,17 @@ onMounted(() => {
           <Smile :size="20" />
         </button>
       </div>
-      
+
       <div class="input-box">
-        <input 
+        <input
           v-model="messageInput"
           type="text"
           placeholder="输入消息..."
           class="message-input"
           @keyup.enter="sendMessage"
         />
-        <button 
-          class="send-btn" 
+        <button
+          class="send-btn"
           :disabled="!messageInput.trim()"
           @click="sendMessage"
         >

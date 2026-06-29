@@ -187,12 +187,12 @@ onMounted(() => {
 
     <main v-if="currentInfo" class="detail-main">
       <div class="image-section">
-        <div v-if="currentInfo.images.length > 0" class="image-slider">
+        <div v-if="currentInfo?.images && currentInfo.images.length > 0" class="image-slider">
           <img v-for="(img, index) in currentInfo.images" :key="index" :src="img" :alt="currentInfo.title" />
         </div>
         <div v-else class="no-image-section">
-          <component :is="infoTypes.find(t => t.type === currentInfo.type)?.icon" :size="64" class="no-image-icon" />
-          <span class="no-image-text">{{ getTypeName(currentInfo.type) }}</span>
+          <component :is="infoTypes.find(t => t.type === currentInfo?.type)?.icon" :size="64" class="no-image-icon" />
+          <span class="no-image-text">{{ getTypeName(currentInfo?.type) }}</span>
         </div>
       </div>
 

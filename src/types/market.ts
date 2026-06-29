@@ -58,3 +58,12 @@ export interface SortOptions {
   field: 'createdAt' | 'viewCount' | 'price' | 'favoriteCount'
   order: 'asc' | 'desc'
 }
+
+export interface Favorite {
+  id: string
+  userId: string
+  infoId: string
+  infoType: InfoType
+  infoTitle: string
+  createdAt: string
+}
