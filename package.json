@@ -8,7 +8,7 @@
     "lint": "run-s \"lint:*\"",
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
-    "mock": "json-server --watch mock/db.json --port 3000 --host localhost"
+    "mock": "json-server --watch db.json --port 3001"
   },
   "dependencies": {
     "@lucide/vue": "^1.21.0",
