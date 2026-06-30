@@ -222,20 +222,19 @@ function validateForm() {
   return Object.values(errors).every((message) => !message)
 }
 
+function getCurrentTime() {
+  const now = new Date()
+  return now.toISOString().slice(0, 16).replace('T', ' ')
+}
+
 async function handleSubmit() {
-  if (!validateForm()) return
+  if (!validateForm()) {
+    return
+  }
 
   submitting.value = true
 
   try {
-    const now = new Date().toLocaleString('zh-CN', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-    }).replace(/\//g, '-')
-
     if (publishType.value === 'trade') {
       await createTrade({
         title: form.title,
@@ -244,11 +243,14 @@ async function handleSubmit() {
         condition: form.condition,
         location: form.location,
         publisher: '当前用户',
-        publishTime: now,
+        publishTime: getCurrentTime(),
         image: '',
         status: 'open',
         description: form.description,
       })
+
+      window.alert('二手商品发布成功')
+      router.push('/trade')
     }
 
     if (publishType.value === 'lostFound') {
@@ -258,10 +260,13 @@ async function handleSubmit() {
         itemName: form.itemName,
         location: form.location,
         eventTime: form.eventTime,
-        contact: '',
+        contact: '站内消息联系',
         status: 'open',
         description: form.description,
       })
+
+      window.alert('失物招领信息发布成功')
+      router.push('/lost-found')
     }
 
     if (publishType.value === 'groupBuy') {
@@ -276,6 +281,9 @@ async function handleSubmit() {
         status: 'open',
         description: form.description,
       })
+
+      window.alert('拼单搭子信息发布成功')
+      router.push('/group-buy')
     }
 
     if (publishType.value === 'errand') {
@@ -290,12 +298,13 @@ async function handleSubmit() {
         status: 'open',
         description: form.description,
       })
-    }
 
-    alert('发布成功！')
-    router.push('/')
+      window.alert('跑腿委托发布成功')
+      router.push('/errand')
+    }
   } catch (error) {
-    alert('发布失败，请重试')
+    console.error(error)
+    window.alert('发布失败，请检查 Mock 服务是否正常运行')
   } finally {
     submitting.value = false
   }
@@ -318,7 +327,7 @@ function resetForm() {
   form.reward = 0
   form.from = ''
   form.to = ''
-  Object.keys(errors).forEach(key => delete errors[key])
+  clearErrors()
 }
 </script>
 
