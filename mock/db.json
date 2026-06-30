@@ -64,6 +64,254 @@
       "id": "yv5S3bIBjQo"
     }
   ],
+  "trades": [
+    {
+      "id": 1,
+      "title": "全新MacBook Pro 14寸出售",
+      "category": "数码设备",
+      "price": 12999,
+      "condition": "全新",
+      "location": "宿舍3号楼",
+      "publisher": "小明同学",
+      "publishTime": "2026-06-26 10:30",
+      "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&q=80",
+      "status": "open",
+      "description": "全新未拆封MacBook Pro 14寸，M3 Pro芯片，18GB内存，512GB存储。官网购买，有发票和保修。"
+    },
+    {
+      "id": 2,
+      "title": "二手自行车出售",
+      "category": "交通工具",
+      "price": 280,
+      "condition": "八成新",
+      "location": "宿舍楼下",
+      "publisher": "张同学",
+      "publishTime": "2026-06-24 11:20",
+      "image": "https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?w=800&q=80",
+      "status": "open",
+      "description": "大二买的自行车，骑了一年多，车况良好，有锁。"
+    },
+    {
+      "id": 3,
+      "title": "考研资料低价转让",
+      "category": "教材资料",
+      "price": 150,
+      "condition": "九成新",
+      "location": "教学楼B栋",
+      "publisher": "李老师",
+      "publishTime": "2026-06-23 08:30",
+      "image": "https://images.unsplash.com/photo-1544717302-77c55c094011?w=800&q=80",
+      "status": "open",
+      "description": "本人已上岸，转让全套考研资料，包括数学、英语、政治的教材和真题。"
+    },
+    {
+      "id": 4,
+      "title": "机械键盘出售",
+      "category": "数码外设",
+      "price": 180,
+      "condition": "八成新",
+      "location": "图书馆门口",
+      "publisher": "计算机学院学生",
+      "publishTime": "2026-06-22 14:30",
+      "image": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80",
+      "status": "open",
+      "description": "键盘使用正常，因更换设备转让。"
+    },
+    {
+      "id": 5,
+      "title": "高等数学教材",
+      "category": "教材资料",
+      "price": 18,
+      "condition": "八成新",
+      "location": "图书馆门口",
+      "publisher": "数学学院学生",
+      "publishTime": "2026-06-21 14:30",
+      "image": "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=80",
+      "status": "open",
+      "description": "教材有少量笔记，不影响使用。"
+    }
+  ],
+  "lostFounds": [
+    {
+      "id": 1,
+      "title": "寻找黑色校园卡",
+      "type": "lost",
+      "itemName": "校园卡",
+      "location": "一食堂附近",
+      "eventTime": "2026-06-02 12:10",
+      "contact": "站内消息联系",
+      "status": "open",
+      "description": "校园卡卡套为黑色，内有学生证。"
+    },
+    {
+      "id": 2,
+      "title": "拾到蓝色雨伞",
+      "type": "found",
+      "itemName": "雨伞",
+      "location": "教学楼 A 区",
+      "eventTime": "2026-06-02 18:40",
+      "contact": "站内消息联系",
+      "status": "open",
+      "description": "雨伞放在 A 区一楼值班室。"
+    },
+    {
+      "id": 3,
+      "title": "捡到校园卡一张",
+      "type": "found",
+      "itemName": "校园卡",
+      "location": "图书馆",
+      "eventTime": "2026-06-26 14:20",
+      "contact": "站内消息联系",
+      "status": "open",
+      "description": "今天下午在图书馆三楼捡到一张校园卡，卡主姓名是王某某，学院是外国语学院。"
+    },
+    {
+      "id": 4,
+      "title": "丢失蓝牙耳机",
+      "type": "lost",
+      "itemName": "AirPods Pro",
+      "location": "体育馆",
+      "eventTime": "2026-06-25 20:00",
+      "contact": "站内消息联系",
+      "status": "open",
+      "description": "丢失了一副AirPods Pro，充电盒是白色的，耳机上有蓝色的保护套。"
+    },
+    {
+      "id": 5,
+      "title": "寻找学生证",
+      "type": "lost",
+      "itemName": "学生证",
+      "location": "教学楼B栋",
+      "eventTime": "2026-06-28 10:30",
+      "contact": "站内消息联系",
+      "status": "open",
+      "description": "学生证姓名为李某某，照片是大一入学照。"
+    }
+  ],
+  "groupBuys": [
+    {
+      "id": 1,
+      "title": "周五晚火锅拼单",
+      "type": "拼餐",
+      "targetCount": 6,
+      "currentCount": 3,
+      "deadline": "2026-06-05 17:00",
+      "location": "学校南门",
+      "publisher": "计算机学院学生",
+      "status": "open",
+      "description": "AA 制，人数够后统一预约。"
+    },
+    {
+      "id": 2,
+      "title": "四六级资料团购",
+      "type": "学习资料",
+      "targetCount": 10,
+      "currentCount": 7,
+      "deadline": "2026-06-06 22:00",
+      "location": "线上确认",
+      "publisher": "外国语学院学生",
+      "status": "open",
+      "description": "达到人数后统一下单。"
+    },
+    {
+      "id": 3,
+      "title": "奶茶拼单！喜茶买一送一",
+      "type": "拼餐",
+      "targetCount": 4,
+      "currentCount": 2,
+      "deadline": "2026-06-27 18:00",
+      "location": "教学楼A栋",
+      "publisher": "张同学",
+      "status": "open",
+      "description": "喜茶今天买一送一活动，还差2人拼单，人均12元！"
+    },
+    {
+      "id": 4,
+      "title": "食堂拼单水果",
+      "type": "拼餐",
+      "targetCount": 5,
+      "currentCount": 2,
+      "deadline": "2026-06-27 12:00",
+      "location": "食堂门口",
+      "publisher": "张同学",
+      "status": "open",
+      "description": "食堂门口水果摊拼单，满50减10，还差3人！"
+    },
+    {
+      "id": 5,
+      "title": "剪映VIP拼单",
+      "type": "学习资料",
+      "targetCount": 3,
+      "currentCount": 1,
+      "deadline": "2026-06-30 11:18",
+      "location": "校内",
+      "publisher": "测试用户",
+      "status": "open",
+      "description": "速速联系"
+    }
+  ],
+  "errands": [
+    {
+      "id": 1,
+      "title": "帮取快递到宿舍楼下",
+      "taskType": "取快递",
+      "reward": 3,
+      "from": "菜鸟驿站",
+      "to": "西区 5 栋",
+      "deadline": "2026-06-03 19:00",
+      "publisher": "西区学生",
+      "status": "open",
+      "description": "快递较轻，送到宿舍楼下即可。"
+    },
+    {
+      "id": 2,
+      "title": "帮买一份晚餐",
+      "taskType": "代买",
+      "reward": 5,
+      "from": "二食堂",
+      "to": "实验楼 302",
+      "deadline": "2026-06-03 18:30",
+      "publisher": "实验室学生",
+      "status": "open",
+      "description": "需要在 18:30 前送到。"
+    },
+    {
+      "id": 3,
+      "title": "求代取快递",
+      "taskType": "取快递",
+      "reward": 15,
+      "from": "西校区快递站",
+      "to": "西校区宿舍5号楼",
+      "deadline": "2026-06-27 12:00",
+      "publisher": "小明同学",
+      "status": "open",
+      "description": "本人在外地，需要有人帮忙从快递站取一下包裹，送到宿舍楼下。"
+    },
+    {
+      "id": 4,
+      "title": "代购午餐",
+      "taskType": "代买",
+      "reward": 10,
+      "from": "东校区食堂",
+      "to": "教学楼A栋302教室",
+      "deadline": "2026-06-27 12:30",
+      "publisher": "小明同学",
+      "status": "claimed",
+      "description": "今天实在太忙了，需要有人帮忙从食堂买一份午餐送到教学楼。"
+    },
+    {
+      "id": 5,
+      "title": "图书馆占座",
+      "taskType": "其他",
+      "reward": 20,
+      "from": "西校区图书馆",
+      "to": "三楼自习区",
+      "deadline": "2026-06-27 08:00",
+      "publisher": "张同学",
+      "status": "in-progress",
+      "description": "明天要考试，需要有人帮忙在图书馆占个座位。"
+    }
+  ],
   "infos": [
     {
       "id": "1",
