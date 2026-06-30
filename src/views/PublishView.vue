@@ -1,601 +1,425 @@
-<script setup lang="ts">import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
-import { useMarketStore } from '@/stores/marketStore';
-import { useUserStore } from '@/stores/userStore';
-import type { InfoType, MarketInfo } from '@/types/market';
-const router = useRouter();
-const marketStore = useMarketStore();
-const userStore = useUserStore();
-const selectedType = ref<InfoType>('secondhand');
-const alert = (msg: string) => window.alert(msg);
-const form = ref({
- title: '',
- description: '',
- campus: '',
- location: '',
- price: '',
- quality: '',
- tags: '',
- images: [] as string[],
- lostFoundType: 'lost',
- itemFeatures: '',
- reward: '',
- currentCount: '1',
- targetCount: '',
- deadline: '',
- taskContent: '',
- expectedTime: '',
-});
-const infoTypes: {
- type: InfoType;
- label: string;
- icon: string;
-}[] = [
- { type: 'secondhand', label: '二手交易', icon: '🛒' },
- { type: 'lostfound', label: '失物招领', icon: '🔍' },
- { type: 'groupbuy', label: '拼单搭子', icon: '🤝' },
- { type: 'errand', label: '跑腿委托', icon: '🚶' },
-];
-const campuses = ['东校区', '西校区', '南校区', '北校区'];
-const qualityOptions = [
- { value: 'new', label: '全新' },
- { value: 'like-new', label: '几乎全新' },
- { value: 'good', label: '成色良好' },
- { value: 'fair', label: '有使用痕迹' },
- { value: 'poor', label: '成色较差' },
-];
-const canSubmit = computed(() => {
- if (!form.value.title || !form.value.description || !form.value.campus)
- return false;
- if (selectedType.value === 'secondhand' && (!form.value.price || !form.value.quality))
- return false;
- if (selectedType.value === 'lostfound' && !form.value.itemFeatures)
- return false;
- if (selectedType.value === 'groupbuy' && (!form.value.targetCount || !form.value.deadline))
- return false;
- if (selectedType.value === 'errand' && !form.value.taskContent)
- return false;
- return true;
-});
-function handleSubmit() {
- if (!canSubmit.value || !userStore.user)
- return;
- const infoData: Omit<MarketInfo, 'id' | 'createdAt' | 'publisher' | 'status' | 'viewCount' | 'favoriteCount'> = {
- title: form.value.title,
- description: form.value.description,
- type: selectedType.value,
- campus: form.value.campus,
- location: form.value.location || '校内',
- tags: form.value.tags.split(',').map(t => t.trim()).filter(t => t),
- images: form.value.images,
- };
- if (selectedType.value === 'secondhand') {
- infoData.price = parseFloat(form.value.price);
- infoData.quality = form.value.quality as 'new' | 'like-new' | 'good' | 'fair' | 'poor';
- }
- if (selectedType.value === 'lostfound') {
- infoData.lostFoundType = form.value.lostFoundType as 'lost' | 'found';
- infoData.itemFeatures = form.value.itemFeatures;
- infoData.reward = form.value.reward ? parseFloat(form.value.reward) : undefined;
- }
- if (selectedType.value === 'groupbuy') {
- infoData.currentCount = parseInt(form.value.currentCount);
- infoData.targetCount = parseInt(form.value.targetCount);
- infoData.deadline = form.value.deadline;
- }
- if (selectedType.value === 'errand') {
- infoData.taskContent = form.value.taskContent;
- infoData.reward = form.value.reward ? parseFloat(form.value.reward) : undefined;
- infoData.expectedTime = form.value.expectedTime;
- }
- marketStore.publishInfo(infoData);
- router.push('/market');
+<template>
+  <section class="page">
+    <div class="page-header">
+      <h1>发布信息</h1>
+      <p>选择发布类型，填写必要信息，让校园需求更快被看见。</p>
+    </div>
+
+    <form class="publish-form" @submit.prevent="handleSubmit">
+      <FormField label="发布类型" required>
+        <select v-model="publishType">
+          <option value="trade">二手交易</option>
+          <option value="lostFound">失物招领</option>
+          <option value="groupBuy">拼单搭子</option>
+          <option value="errand">跑腿委托</option>
+        </select>
+      </FormField>
+
+      <FormField label="标题" required :error="errors.title">
+        <input v-model.trim="form.title" type="text" placeholder="请输入标题" />
+      </FormField>
+
+      <FormField label="地点" required :error="errors.location">
+        <input v-model.trim="form.location" type="text" placeholder="请输入地点" />
+      </FormField>
+
+      <div v-if="publishType === 'trade'" class="trade-fields">
+        <FormField label="分类" required :error="errors.category">
+          <select v-model="form.category">
+            <option value="">请选择分类</option>
+            <option value="数码设备">数码设备</option>
+            <option value="图书教材">图书教材</option>
+            <option value="生活用品">生活用品</option>
+            <option value="运动器材">运动器材</option>
+            <option value="其他">其他</option>
+          </select>
+        </FormField>
+
+        <FormField label="价格" required :error="errors.price">
+          <div class="price-input-wrapper">
+            <span>¥</span>
+            <input v-model="form.price" type="number" placeholder="0.00" />
+          </div>
+        </FormField>
+
+        <FormField label="成色" required :error="errors.condition">
+          <select v-model="form.condition">
+            <option value="">请选择成色</option>
+            <option value="全新">全新</option>
+            <option value="几乎全新">几乎全新</option>
+            <option value="成色良好">成色良好</option>
+            <option value="有使用痕迹">有使用痕迹</option>
+          </select>
+        </FormField>
+
+        <FormField label="图片">
+          <input v-model="form.image" type="text" placeholder="请输入图片URL" />
+        </FormField>
+      </div>
+
+      <div v-if="publishType === 'lostFound'" class="lostfound-fields">
+        <FormField label="类型" required :error="errors.type">
+          <select v-model="form.type">
+            <option value="lost">丢失物品</option>
+            <option value="found">拾获物品</option>
+          </select>
+        </FormField>
+
+        <FormField label="物品名称" required :error="errors.itemName">
+          <input v-model.trim="form.itemName" type="text" placeholder="请输入物品名称" />
+        </FormField>
+
+        <FormField label="时间" required :error="errors.eventTime">
+          <input v-model="form.eventTime" type="datetime-local" />
+        </FormField>
+
+        <FormField label="联系方式" required :error="errors.contact">
+          <input v-model.trim="form.contact" type="text" placeholder="请输入联系方式" />
+        </FormField>
+      </div>
+
+      <div v-if="publishType === 'groupBuy'" class="groupbuy-fields">
+        <FormField label="拼单类型" required :error="errors.type">
+          <select v-model="form.type">
+            <option value="">请选择拼单类型</option>
+            <option value="美食">美食</option>
+            <option value="数码">数码</option>
+            <option value="日用品">日用品</option>
+            <option value="其他">其他</option>
+          </select>
+        </FormField>
+
+        <FormField label="目标人数" required :error="errors.targetCount">
+          <input v-model="form.targetCount" type="number" placeholder="需要多少人参与" />
+        </FormField>
+
+        <FormField label="截止时间" required :error="errors.deadline">
+          <input v-model="form.deadline" type="datetime-local" />
+        </FormField>
+      </div>
+
+      <div v-if="publishType === 'errand'" class="errand-fields">
+        <FormField label="任务类型" required :error="errors.taskType">
+          <select v-model="form.taskType">
+            <option value="">请选择任务类型</option>
+            <option value="取快递">取快递</option>
+            <option value="买东西">买东西</option>
+            <option value="送东西">送东西</option>
+            <option value="其他">其他</option>
+          </select>
+        </FormField>
+
+        <FormField label="报酬" required :error="errors.reward">
+          <div class="price-input-wrapper">
+            <span>¥</span>
+            <input v-model="form.reward" type="number" placeholder="0.00" />
+          </div>
+        </FormField>
+
+        <FormField label="起点" required :error="errors.from">
+          <input v-model.trim="form.from" type="text" placeholder="请输入起点" />
+        </FormField>
+
+        <FormField label="终点" required :error="errors.to">
+          <input v-model.trim="form.to" type="text" placeholder="请输入终点" />
+        </FormField>
+
+        <FormField label="截止时间" required :error="errors.deadline">
+          <input v-model="form.deadline" type="datetime-local" />
+        </FormField>
+      </div>
+
+      <FormField label="描述" required :error="errors.description">
+        <textarea v-model.trim="form.description" rows="5" placeholder="请简要描述具体情况"></textarea>
+      </FormField>
+
+      <div class="actions">
+        <button type="button" class="secondary" @click="resetForm">重置</button>
+        <button type="submit" class="primary" :disabled="submitting">
+          {{ submitting ? '提交中...' : '发布' }}
+        </button>
+      </div>
+    </form>
+  </section>
+</template>
+
+<script setup lang="ts">
+import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import FormField from '@/components/FormField.vue'
+import { createTrade } from '@/api/trade'
+import { createLostFound } from '@/api/lostFound'
+import { createGroupBuy } from '@/api/groupBuy'
+import { createErrand } from '@/api/errand'
+
+const router = useRouter()
+const publishType = ref<'trade' | 'lostFound' | 'groupBuy' | 'errand'>('trade')
+const submitting = ref(false)
+
+const form = reactive({
+  title: '',
+  location: '',
+  description: '',
+  category: '',
+  price: '',
+  condition: '',
+  image: '',
+  type: '',
+  itemName: '',
+  eventTime: '',
+  contact: '',
+  targetCount: '',
+  deadline: '',
+  taskType: '',
+  reward: '',
+  from: '',
+  to: '',
+})
+
+const errors = reactive<Record<string, string>>({})
+
+function validateForm(): boolean {
+  Object.keys(errors).forEach(key => delete errors[key])
+
+  if (!form.title) errors.title = '请输入标题'
+  if (!form.location) errors.location = '请输入地点'
+  if (!form.description) errors.description = '请输入描述'
+
+  if (publishType.value === 'trade') {
+    if (!form.category) errors.category = '请选择分类'
+    if (!form.price) errors.price = '请输入价格'
+    if (!form.condition) errors.condition = '请选择成色'
+  }
+
+  if (publishType.value === 'lostFound') {
+    if (!form.type) errors.type = '请选择类型'
+    if (!form.itemName) errors.itemName = '请输入物品名称'
+    if (!form.eventTime) errors.eventTime = '请选择时间'
+    if (!form.contact) errors.contact = '请输入联系方式'
+  }
+
+  if (publishType.value === 'groupBuy') {
+    if (!form.type) errors.type = '请选择拼单类型'
+    if (!form.targetCount) errors.targetCount = '请输入目标人数'
+    if (!form.deadline) errors.deadline = '请选择截止时间'
+  }
+
+  if (publishType.value === 'errand') {
+    if (!form.taskType) errors.taskType = '请选择任务类型'
+    if (!form.reward) errors.reward = '请输入报酬'
+    if (!form.from) errors.from = '请输入起点'
+    if (!form.to) errors.to = '请输入终点'
+    if (!form.deadline) errors.deadline = '请选择截止时间'
+  }
+
+  return Object.keys(errors).length === 0
+}
+
+async function handleSubmit() {
+  if (!validateForm()) return
+
+  submitting.value = true
+
+  try {
+    const now = new Date().toLocaleString('zh-CN', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).replace(/\//g, '-')
+
+    if (publishType.value === 'trade') {
+      await createTrade({
+        title: form.title,
+        category: form.category,
+        price: parseFloat(form.price),
+        condition: form.condition,
+        location: form.location,
+        publisher: '当前用户',
+        publishTime: now,
+        image: form.image || '',
+        status: 'open',
+        description: form.description,
+      })
+    }
+
+    if (publishType.value === 'lostFound') {
+      await createLostFound({
+        title: form.title,
+        type: form.type as 'lost' | 'found',
+        itemName: form.itemName,
+        location: form.location,
+        eventTime: form.eventTime,
+        contact: form.contact,
+        status: 'open',
+        description: form.description,
+      })
+    }
+
+    if (publishType.value === 'groupBuy') {
+      await createGroupBuy({
+        title: form.title,
+        type: form.type,
+        targetCount: parseInt(form.targetCount),
+        currentCount: 1,
+        deadline: form.deadline,
+        location: form.location,
+        publisher: '当前用户',
+        status: 'open',
+        description: form.description,
+      })
+    }
+
+    if (publishType.value === 'errand') {
+      await createErrand({
+        title: form.title,
+        taskType: form.taskType,
+        reward: parseFloat(form.reward),
+        from: form.from,
+        to: form.to,
+        deadline: form.deadline,
+        publisher: '当前用户',
+        status: 'open',
+        description: form.description,
+      })
+    }
+
+    alert('发布成功！')
+    router.push('/')
+  } catch (error) {
+    alert('发布失败，请重试')
+  } finally {
+    submitting.value = false
+  }
+}
+
+function resetForm() {
+  Object.keys(form).forEach(key => {
+    (form as Record<string, unknown>)[key] = ''
+  })
+  Object.keys(errors).forEach(key => delete errors[key])
 }
 </script>
 
-<template>
-  <div class="publish-page">
-    <header class="publish-header">
-      <div class="header-content">
-        <button class="back-btn" @click="router.back()">
-          <span>←</span>
-        </button>
-        <h1>发布信息</h1>
-        <button class="submit-btn" :class="{ disabled: !canSubmit }" @click="handleSubmit()">
-          发布
-        </button>
-      </div>
-    </header>
-
-    <main class="publish-main">
-      <div class="type-section">
-        <label class="section-label">选择类型</label>
-        <div class="type-grid">
-          <button
-            v-for="item in infoTypes"
-            :key="item.type"
-            class="type-card"
-            :class="{ active: selectedType === item.type }"
-            @click="selectedType = item.type"
-          >
-            <span class="type-icon">{{ item.icon }}</span>
-            <span class="type-name">{{ item.label }}</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <div class="form-group">
-          <label class="form-label">标题 *</label>
-          <input
-            v-model="form.title"
-            type="text"
-            placeholder="输入信息标题"
-            class="form-input"
-          />
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">校区 *</label>
-          <select v-model="form.campus" class="form-input">
-            <option value="">请选择校区</option>
-            <option v-for="campus in campuses" :key="campus" :value="campus">
-              {{ campus }}
-            </option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">详细地点</label>
-          <input
-            v-model="form.location"
-            type="text"
-            placeholder="如：教学楼A栋、宿舍3号楼"
-            class="form-input"
-          />
-        </div>
-
-        <div v-if="selectedType === 'secondhand'" class="secondhand-fields">
-          <div class="form-group">
-            <label class="form-label">价格 *</label>
-            <div class="price-input-wrapper">
-              <span>¥</span>
-              <input
-                v-model="form.price"
-                type="number"
-                placeholder="0.00"
-                class="form-input price-input"
-              />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">成色 *</label>
-            <div class="quality-options">
-              <button
-                v-for="option in qualityOptions"
-                :key="option.value"
-                class="quality-option"
-                :class="{ active: form.quality === option.value }"
-                @click="form.quality = option.value"
-              >
-                {{ option.label }}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div v-if="selectedType === 'lostfound'" class="lostfound-fields">
-          <div class="form-group">
-            <label class="form-label">类型</label>
-            <div class="lostfound-type-options">
-              <button
-                class="lostfound-type-option"
-                :class="{ active: form.lostFoundType === 'lost' }"
-                @click="form.lostFoundType = 'lost'"
-              >
-                🔍 丢失物品
-              </button>
-              <button
-                class="lostfound-type-option"
-                :class="{ active: form.lostFoundType === 'found' }"
-                @click="form.lostFoundType = 'found'"
-              >
-                🎯 拾获物品
-              </button>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">物品特征 *</label>
-            <textarea
-              v-model="form.itemFeatures"
-              placeholder="描述物品的特征，便于识别"
-              class="form-textarea"
-            ></textarea>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">悬赏金额</label>
-            <div class="price-input-wrapper">
-              <span>¥</span>
-              <input
-                v-model="form.reward"
-                type="number"
-                placeholder="0.00"
-                class="form-input price-input"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div v-if="selectedType === 'groupbuy'" class="groupbuy-fields">
-          <div class="form-group">
-            <label class="form-label">目标人数 *</label>
-            <input
-              v-model="form.targetCount"
-              type="number"
-              placeholder="需要多少人参与"
-              class="form-input"
-            />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">截止时间 *</label>
-            <input
-              v-model="form.deadline"
-              type="datetime-local"
-              class="form-input"
-            />
-          </div>
-        </div>
-
-        <div v-if="selectedType === 'errand'" class="errand-fields">
-          <div class="form-group">
-            <label class="form-label">任务内容 *</label>
-            <textarea
-              v-model="form.taskContent"
-              placeholder="详细描述需要完成的任务"
-              class="form-textarea"
-            ></textarea>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">酬劳</label>
-            <div class="price-input-wrapper">
-              <span>¥</span>
-              <input
-                v-model="form.reward"
-                type="number"
-                placeholder="0.00"
-                class="form-input price-input"
-              />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">期望完成时间</label>
-            <input
-              v-model="form.expectedTime"
-              type="datetime-local"
-              class="form-input"
-            />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">详细描述 *</label>
-          <textarea
-            v-model="form.description"
-            placeholder="详细描述您的信息..."
-            class="form-textarea"
-            rows="5"
-          ></textarea>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">标签</label>
-          <input
-            v-model="form.tags"
-            type="text"
-            placeholder="输入标签，用逗号分隔"
-            class="form-input"
-          />
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">图片</label>
-          <div class="image-upload">
-            <div class="upload-btn" @click="alert('图片上传功能开发中')">
-              <span class="upload-icon">📷</span>
-              <span>上传图片</span>
-            </div>
-            <div v-if="form.images.length > 0" class="uploaded-images">
-              <div v-for="(img, index) in form.images" :key="index" class="uploaded-image">
-                <img :src="img" :alt="`图片${index + 1}`" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-  </div>
-</template>
-
 <style scoped>
-.publish-page {
-  min-height: 100vh;
-  background: #f8fafc;
+.page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px;
 }
 
-.publish-header {
-  background: #fff;
-  padding: 16px 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+.page-header {
+  text-align: center;
+  margin-bottom: 32px;
 }
 
-.header-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.page-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 8px 0;
 }
 
-.back-btn {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f1f5f9;
-  border: none;
-  border-radius: 8px;
-  font-size: 20px;
-  cursor: pointer;
+.page-header p {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
 }
 
-.publish-header h1 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #1e293b;
-}
-
-.submit-btn {
-  padding: 8px 16px;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.submit-btn.disabled {
-  background: #cbd5e1;
-  cursor: not-allowed;
-}
-
-.publish-main {
-  padding: 20px;
-}
-
-.type-section {
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.section-label {
-  font-size: 15px;
-  font-weight: 600;
-  color: #1e293b;
-  display: block;
-  margin-bottom: 16px;
-}
-
-.type-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-.type-card {
+.publish-form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 16px;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  background: #fff;
-  cursor: pointer;
-  transition: all 0.2s;
+  gap: 20px;
 }
 
-.type-card.active {
-  border-color: #10b981;
-  background: #f0f4ff;
-}
-
-.type-icon {
-  font-size: 28px;
-}
-
-.type-name {
-  font-size: 14px;
-  font-weight: 500;
-  color: #475569;
-}
-
-.type-card.active .type-name {
-  color: #10b981;
-}
-
-.form-section {
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group:last-child {
-  margin-bottom: 0;
-}
-
-.form-label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #475569;
-  display: block;
-  margin-bottom: 8px;
-}
-
-.form-input {
+.publish-form input,
+.publish-form select,
+.publish-form textarea {
   width: 100%;
-  padding: 12px;
-  border: 2px solid #e2e8f0;
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
   border-radius: 8px;
-  font-size: 15px;
-  outline: none;
+  font-size: 14px;
   box-sizing: border-box;
+  transition: border-color 0.2s;
 }
 
-.form-input:focus {
-  border-color: #10b981;
+.publish-form input:focus,
+.publish-form select:focus,
+.publish-form textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
 }
 
-.form-textarea {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 15px;
-  outline: none;
-  box-sizing: border-box;
+.publish-form textarea {
   resize: vertical;
-}
-
-.form-textarea:focus {
-  border-color: #10b981;
+  min-height: 100px;
 }
 
 .price-input-wrapper {
   display: flex;
   align-items: center;
-  border: 2px solid #e2e8f0;
+  border: 2px solid #e5e7eb;
   border-radius: 8px;
-  padding: 0 12px;
+  padding: 0 16px;
+  transition: border-color 0.2s;
 }
 
 .price-input-wrapper:focus-within {
-  border-color: #10b981;
+  border-color: #3b82f6;
 }
 
 .price-input-wrapper span {
-  font-size: 18px;
-  color: #64748b;
+  font-size: 16px;
+  color: #6b7280;
 }
 
-.price-input {
+.price-input-wrapper input {
   border: none;
   padding: 12px;
-  font-size: 18px;
+  font-size: 16px;
   outline: none;
 }
 
-.quality-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.quality-option {
-  padding: 8px 16px;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 14px;
-  color: #64748b;
-  background: #fff;
-  cursor: pointer;
-}
-
-.quality-option.active {
-  border-color: #10b981;
-  color: #10b981;
-  background: #f0f4ff;
-}
-
-.lostfound-type-options {
+.actions {
   display: flex;
   gap: 12px;
+  margin-top: 8px;
 }
 
-.lostfound-type-option {
+.actions button {
   flex: 1;
   padding: 12px;
-  border: 2px solid #e2e8f0;
   border-radius: 8px;
-  font-size: 14px;
-  color: #64748b;
-  background: #fff;
+  font-size: 15px;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
-.lostfound-type-option.active {
-  border-color: #10b981;
-  color: #10b981;
-  background: #f0f4ff;
+.actions button.primary {
+  background: #3b82f6;
+  color: white;
+  border: none;
 }
 
-.image-upload {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+.actions button.primary:hover:not(:disabled) {
+  background: #2563eb;
 }
 
-.upload-btn {
-  width: 100px;
-  height: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border: 2px dashed #cbd5e1;
-  border-radius: 8px;
-  background: #f8fafc;
-  cursor: pointer;
+.actions button.primary:disabled {
+  background: #93c5fd;
+  cursor: not-allowed;
 }
 
-.upload-icon {
-  font-size: 24px;
-  margin-bottom: 4px;
+.actions button.secondary {
+  background: #f3f4f6;
+  color: #374151;
+  border: none;
 }
 
-.upload-btn span:last-child {
-  font-size: 12px;
-  color: #94a3b8;
-}
-
-.uploaded-images {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.uploaded-image {
-  width: 100px;
-  height: 100px;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.uploaded-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.actions button.secondary:hover {
+  background: #e5e7eb;
 }
 </style>
