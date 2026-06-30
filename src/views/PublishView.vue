@@ -333,52 +333,50 @@ function resetForm() {
 
 <style scoped>
 .page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   max-width: 600px;
   margin: 0 auto;
   padding: 24px;
 }
 
 .page-header {
-  text-align: center;
-  margin-bottom: 32px;
+  padding: 24px;
+  border-radius: 16px;
+  background: #fff;
 }
 
 .page-header h1 {
+  margin: 0 0 8px;
   font-size: 28px;
   font-weight: 700;
   color: #1f2937;
-  margin: 0 0 8px 0;
 }
 
 .page-header p {
+  margin: 0;
   font-size: 14px;
   color: #6b7280;
-  margin: 0;
 }
 
 .publish-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  display: grid;
+  gap: 18px;
+  padding: 24px;
+  border-radius: 16px;
+  background: #fff;
 }
 
 .publish-form input,
 .publish-form select,
 .publish-form textarea {
   width: 100%;
-  padding: 12px 16px;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 14px;
   box-sizing: border-box;
-  transition: border-color 0.2s;
-}
-
-.publish-form input:focus,
-.publish-form select:focus,
-.publish-form textarea:focus {
-  outline: none;
-  border-color: #3b82f6;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
 }
 
 .publish-form textarea {
@@ -386,66 +384,72 @@ function resetForm() {
   min-height: 100px;
 }
 
+.publish-form input:focus,
+.publish-form select:focus,
+.publish-form textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
 .price-input-wrapper {
   display: flex;
   align-items: center;
-  border: 2px solid #e5e7eb;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
-  padding: 0 16px;
-  transition: border-color 0.2s;
+  padding: 0 12px;
+  box-sizing: border-box;
 }
 
 .price-input-wrapper:focus-within {
-  border-color: #3b82f6;
+  border-color: #2563eb;
 }
 
 .price-input-wrapper span {
-  font-size: 16px;
+  font-size: 14px;
   color: #6b7280;
 }
 
 .price-input-wrapper input {
   border: none;
-  padding: 12px;
-  font-size: 16px;
+  padding: 10px 12px;
+  font-size: 14px;
   outline: none;
 }
 
 .actions {
   display: flex;
+  justify-content: flex-end;
   gap: 12px;
   margin-top: 8px;
 }
 
 .actions button {
-  flex: 1;
-  padding: 12px;
+  border: none;
   border-radius: 8px;
+  padding: 10px 18px;
+  cursor: pointer;
   font-size: 15px;
   font-weight: 500;
-  cursor: pointer;
   transition: all 0.2s;
 }
 
+.actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 .actions button.primary {
-  background: #3b82f6;
-  color: white;
-  border: none;
+  background: #2563eb;
+  color: #fff;
 }
 
 .actions button.primary:hover:not(:disabled) {
-  background: #2563eb;
-}
-
-.actions button.primary:disabled {
-  background: #93c5fd;
-  cursor: not-allowed;
+  background: #1d4ed8;
 }
 
 .actions button.secondary {
   background: #f3f4f6;
   color: #374151;
-  border: none;
 }
 
 .actions button.secondary:hover {
