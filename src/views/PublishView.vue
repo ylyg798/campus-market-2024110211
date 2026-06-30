@@ -111,16 +111,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import FormField from '@/components/FormField.vue'
-import { createTrade } from '@/api/trade'
-import { createLostFound } from '@/api/lostFound'
-import { createGroupBuy } from '@/api/groupBuy'
-import { createErrand } from '@/api/errand'
+
+import FormField from '../components/FormField.vue'
+import { createTrade } from '../api/trade'
+import { createLostFound } from '../api/lostFound'
+import { createGroupBuy } from '../api/groupBuy'
+import { createErrand } from '../api/errand'
+
+type PublishType = 'trade' | 'lostFound' | 'groupBuy' | 'errand'
 
 const router = useRouter()
-const publishType = ref<'trade' | 'lostFound' | 'groupBuy' | 'errand'>('trade')
+const publishType = ref<PublishType>('trade')
 const submitting = ref(false)
 
 const form = reactive({
@@ -128,18 +131,16 @@ const form = reactive({
   location: '',
   description: '',
   category: '',
-  price: '',
+  price: 0,
   condition: '',
-  image: '',
-  lostFoundType: '',
+  lostFoundType: 'lost',
   itemName: '',
   eventTime: '',
-  contact: '',
   groupType: '',
-  targetCount: '',
+  targetCount: 2,
   deadline: '',
   taskType: '',
-  reward: '',
+  reward: 0,
   from: '',
   to: '',
 })
@@ -155,7 +156,7 @@ function validateForm(): boolean {
 
   if (publishType.value === 'trade') {
     if (!form.category) errors.category = '请输入商品分类'
-    if (!form.price) errors.price = '请输入价格'
+    if (form.price === 0) errors.price = '请输入价格'
     if (!form.condition) errors.condition = '请选择成色'
   }
 
@@ -167,13 +168,13 @@ function validateForm(): boolean {
 
   if (publishType.value === 'groupBuy') {
     if (!form.groupType) errors.groupType = '请输入拼单类型'
-    if (!form.targetCount) errors.targetCount = '请输入目标人数'
+    if (form.targetCount < 2) errors.targetCount = '目标人数至少为2人'
     if (!form.deadline) errors.deadline = '请选择截止时间'
   }
 
   if (publishType.value === 'errand') {
     if (!form.taskType) errors.taskType = '请输入任务类型'
-    if (!form.reward) errors.reward = '请输入酬劳'
+    if (form.reward === 0) errors.reward = '请输入酬劳'
     if (!form.from) errors.from = '请输入取件地点'
     if (!form.to) errors.to = '请输入送达地点'
     if (!form.deadline) errors.deadline = '请选择截止时间'
@@ -200,7 +201,7 @@ async function handleSubmit() {
       await createTrade({
         title: form.title,
         category: form.category,
-        price: parseFloat(form.price),
+        price: form.price,
         condition: form.condition,
         location: form.location,
         publisher: '当前用户',
@@ -228,7 +229,7 @@ async function handleSubmit() {
       await createGroupBuy({
         title: form.title,
         type: form.groupType,
-        targetCount: parseInt(form.targetCount),
+        targetCount: form.targetCount,
         currentCount: 1,
         deadline: form.deadline,
         location: form.location,
@@ -242,7 +243,7 @@ async function handleSubmit() {
       await createErrand({
         title: form.title,
         taskType: form.taskType,
-        reward: parseFloat(form.reward),
+        reward: form.reward,
         from: form.from,
         to: form.to,
         deadline: form.deadline,
@@ -262,9 +263,22 @@ async function handleSubmit() {
 }
 
 function resetForm() {
-  Object.keys(form).forEach(key => {
-    (form as Record<string, unknown>)[key] = ''
-  })
+  form.title = ''
+  form.location = ''
+  form.description = ''
+  form.category = ''
+  form.price = 0
+  form.condition = ''
+  form.lostFoundType = 'lost'
+  form.itemName = ''
+  form.eventTime = ''
+  form.groupType = ''
+  form.targetCount = 2
+  form.deadline = ''
+  form.taskType = ''
+  form.reward = 0
+  form.from = ''
+  form.to = ''
   Object.keys(errors).forEach(key => delete errors[key])
 }
 </script>
