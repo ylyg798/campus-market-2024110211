@@ -27,6 +27,7 @@ const navItems = [
   { path: '/lost-found', label: '失物招领', icon: Search },
   { path: '/group-buy', label: '拼单搭子', icon: Users },
   { path: '/errand', label: '跑腿委托', icon: PersonStanding },
+  { path: '/publish', label: '发布', icon: PenTool },
 ]
 
 function isActive(path: string) {
