@@ -1,7 +1,7 @@
 import http from './http'
 
 export interface TradeItem {
-  id: number
+  id?: number
   title: string
   category: string
   price: number

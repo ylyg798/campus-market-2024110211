@@ -1,7 +1,7 @@
 import http from './http'
 
 export interface LostFoundItem {
-  id: number
+  id?: number
   title: string
   type: 'lost' | 'found'
   itemName: string

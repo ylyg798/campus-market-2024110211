@@ -1,7 +1,7 @@
 import http from './http'
 
 export interface GroupBuyItem {
-  id: number
+  id?: number
   title: string
   type: string
   targetCount: number

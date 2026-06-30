@@ -1,7 +1,7 @@
 import http from './http'
 
 export interface ErrandItem {
-  id: number
+  id?: number
   title: string
   taskType: string
   reward: number
