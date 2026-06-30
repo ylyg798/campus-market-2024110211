@@ -23,45 +23,35 @@
         <input v-model.trim="form.location" type="text" placeholder="请输入地点" />
       </FormField>
 
-      <div v-if="publishType === 'trade'" class="trade-fields">
-        <FormField label="分类" required :error="errors.category">
-          <select v-model="form.category">
-            <option value="">请选择分类</option>
-            <option value="数码设备">数码设备</option>
-            <option value="图书教材">图书教材</option>
-            <option value="生活用品">生活用品</option>
-            <option value="运动器材">运动器材</option>
-            <option value="其他">其他</option>
-          </select>
+      <FormField label="描述" required :error="errors.description">
+        <textarea v-model.trim="form.description" rows="5" placeholder="请简要描述具体情况"></textarea>
+      </FormField>
+
+      <template v-if="publishType === 'trade'">
+        <FormField label="商品分类" required :error="errors.category">
+          <input v-model.trim="form.category" type="text" placeholder="如：数码配件、教材资料、生活用品" />
         </FormField>
 
         <FormField label="价格" required :error="errors.price">
-          <div class="price-input-wrapper">
-            <span>¥</span>
-            <input v-model="form.price" type="number" placeholder="0.00" />
-          </div>
+          <input v-model.number="form.price" type="number" min="0" placeholder="请输入价格" />
         </FormField>
 
         <FormField label="成色" required :error="errors.condition">
           <select v-model="form.condition">
             <option value="">请选择成色</option>
             <option value="全新">全新</option>
-            <option value="几乎全新">几乎全新</option>
-            <option value="成色良好">成色良好</option>
-            <option value="有使用痕迹">有使用痕迹</option>
+            <option value="九成新">九成新</option>
+            <option value="八成新">八成新</option>
+            <option value="正常使用痕迹">正常使用痕迹</option>
           </select>
         </FormField>
+      </template>
 
-        <FormField label="图片">
-          <input v-model="form.image" type="text" placeholder="请输入图片URL" />
-        </FormField>
-      </div>
-
-      <div v-if="publishType === 'lostFound'" class="lostfound-fields">
-        <FormField label="类型" required :error="errors.type">
-          <select v-model="form.type">
-            <option value="lost">丢失物品</option>
-            <option value="found">拾获物品</option>
+      <template v-if="publishType === 'lostFound'">
+        <FormField label="信息类型" required>
+          <select v-model="form.lostFoundType">
+            <option value="lost">寻物</option>
+            <option value="found">招领</option>
           </select>
         </FormField>
 
@@ -69,69 +59,46 @@
           <input v-model.trim="form.itemName" type="text" placeholder="请输入物品名称" />
         </FormField>
 
-        <FormField label="时间" required :error="errors.eventTime">
+        <FormField label="发生时间" required :error="errors.eventTime">
           <input v-model="form.eventTime" type="datetime-local" />
         </FormField>
+      </template>
 
-        <FormField label="联系方式" required :error="errors.contact">
-          <input v-model.trim="form.contact" type="text" placeholder="请输入联系方式" />
-        </FormField>
-      </div>
-
-      <div v-if="publishType === 'groupBuy'" class="groupbuy-fields">
-        <FormField label="拼单类型" required :error="errors.type">
-          <select v-model="form.type">
-            <option value="">请选择拼单类型</option>
-            <option value="美食">美食</option>
-            <option value="数码">数码</option>
-            <option value="日用品">日用品</option>
-            <option value="其他">其他</option>
-          </select>
+      <template v-if="publishType === 'groupBuy'">
+        <FormField label="拼单类型" required :error="errors.groupType">
+          <input v-model.trim="form.groupType" type="text" placeholder="如：拼餐、资料团购、运动搭子" />
         </FormField>
 
         <FormField label="目标人数" required :error="errors.targetCount">
-          <input v-model="form.targetCount" type="number" placeholder="需要多少人参与" />
+          <input v-model.number="form.targetCount" type="number" min="2" placeholder="请输入目标人数" />
         </FormField>
 
         <FormField label="截止时间" required :error="errors.deadline">
           <input v-model="form.deadline" type="datetime-local" />
         </FormField>
-      </div>
+      </template>
 
-      <div v-if="publishType === 'errand'" class="errand-fields">
+      <template v-if="publishType === 'errand'">
         <FormField label="任务类型" required :error="errors.taskType">
-          <select v-model="form.taskType">
-            <option value="">请选择任务类型</option>
-            <option value="取快递">取快递</option>
-            <option value="买东西">买东西</option>
-            <option value="送东西">送东西</option>
-            <option value="其他">其他</option>
-          </select>
+          <input v-model.trim="form.taskType" type="text" placeholder="如：取快递、代买、代送" />
         </FormField>
 
-        <FormField label="报酬" required :error="errors.reward">
-          <div class="price-input-wrapper">
-            <span>¥</span>
-            <input v-model="form.reward" type="number" placeholder="0.00" />
-          </div>
+        <FormField label="酬劳" required :error="errors.reward">
+          <input v-model.number="form.reward" type="number" min="0" placeholder="请输入酬劳" />
         </FormField>
 
-        <FormField label="起点" required :error="errors.from">
-          <input v-model.trim="form.from" type="text" placeholder="请输入起点" />
+        <FormField label="取件地点" required :error="errors.from">
+          <input v-model.trim="form.from" type="text" placeholder="请输入取件地点" />
         </FormField>
 
-        <FormField label="终点" required :error="errors.to">
-          <input v-model.trim="form.to" type="text" placeholder="请输入终点" />
+        <FormField label="送达地点" required :error="errors.to">
+          <input v-model.trim="form.to" type="text" placeholder="请输入送达地点" />
         </FormField>
 
         <FormField label="截止时间" required :error="errors.deadline">
           <input v-model="form.deadline" type="datetime-local" />
         </FormField>
-      </div>
-
-      <FormField label="描述" required :error="errors.description">
-        <textarea v-model.trim="form.description" rows="5" placeholder="请简要描述具体情况"></textarea>
-      </FormField>
+      </template>
 
       <div class="actions">
         <button type="button" class="secondary" @click="resetForm">重置</button>
@@ -164,10 +131,11 @@ const form = reactive({
   price: '',
   condition: '',
   image: '',
-  type: '',
+  lostFoundType: '',
   itemName: '',
   eventTime: '',
   contact: '',
+  groupType: '',
   targetCount: '',
   deadline: '',
   taskType: '',
@@ -186,29 +154,28 @@ function validateForm(): boolean {
   if (!form.description) errors.description = '请输入描述'
 
   if (publishType.value === 'trade') {
-    if (!form.category) errors.category = '请选择分类'
+    if (!form.category) errors.category = '请输入商品分类'
     if (!form.price) errors.price = '请输入价格'
     if (!form.condition) errors.condition = '请选择成色'
   }
 
   if (publishType.value === 'lostFound') {
-    if (!form.type) errors.type = '请选择类型'
+    if (!form.lostFoundType) errors.lostFoundType = '请选择信息类型'
     if (!form.itemName) errors.itemName = '请输入物品名称'
-    if (!form.eventTime) errors.eventTime = '请选择时间'
-    if (!form.contact) errors.contact = '请输入联系方式'
+    if (!form.eventTime) errors.eventTime = '请选择发生时间'
   }
 
   if (publishType.value === 'groupBuy') {
-    if (!form.type) errors.type = '请选择拼单类型'
+    if (!form.groupType) errors.groupType = '请输入拼单类型'
     if (!form.targetCount) errors.targetCount = '请输入目标人数'
     if (!form.deadline) errors.deadline = '请选择截止时间'
   }
 
   if (publishType.value === 'errand') {
-    if (!form.taskType) errors.taskType = '请选择任务类型'
-    if (!form.reward) errors.reward = '请输入报酬'
-    if (!form.from) errors.from = '请输入起点'
-    if (!form.to) errors.to = '请输入终点'
+    if (!form.taskType) errors.taskType = '请输入任务类型'
+    if (!form.reward) errors.reward = '请输入酬劳'
+    if (!form.from) errors.from = '请输入取件地点'
+    if (!form.to) errors.to = '请输入送达地点'
     if (!form.deadline) errors.deadline = '请选择截止时间'
   }
 
@@ -238,7 +205,7 @@ async function handleSubmit() {
         location: form.location,
         publisher: '当前用户',
         publishTime: now,
-        image: form.image || '',
+        image: '',
         status: 'open',
         description: form.description,
       })
@@ -247,11 +214,11 @@ async function handleSubmit() {
     if (publishType.value === 'lostFound') {
       await createLostFound({
         title: form.title,
-        type: form.type as 'lost' | 'found',
+        type: form.lostFoundType as 'lost' | 'found',
         itemName: form.itemName,
         location: form.location,
         eventTime: form.eventTime,
-        contact: form.contact,
+        contact: '',
         status: 'open',
         description: form.description,
       })
@@ -260,7 +227,7 @@ async function handleSubmit() {
     if (publishType.value === 'groupBuy') {
       await createGroupBuy({
         title: form.title,
-        type: form.type,
+        type: form.groupType,
         targetCount: parseInt(form.targetCount),
         currentCount: 1,
         deadline: form.deadline,
