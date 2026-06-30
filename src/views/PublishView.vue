@@ -147,40 +147,79 @@ const form = reactive({
 
 const errors = reactive<Record<string, string>>({})
 
-function validateForm(): boolean {
-  Object.keys(errors).forEach(key => delete errors[key])
+function clearErrors() {
+  Object.keys(errors).forEach((key) => {
+    errors[key] = ''
+  })
+}
 
-  if (!form.title) errors.title = '请输入标题'
-  if (!form.location) errors.location = '请输入地点'
-  if (!form.description) errors.description = '请输入描述'
+function validateForm() {
+  clearErrors()
+
+  if (!form.title) {
+    errors.title = '请输入标题'
+  }
+
+  if (!form.location) {
+    errors.location = '请输入地点'
+  }
+
+  if (!form.description) {
+    errors.description = '请输入描述'
+  }
 
   if (publishType.value === 'trade') {
-    if (!form.category) errors.category = '请输入商品分类'
-    if (form.price === 0) errors.price = '请输入价格'
-    if (!form.condition) errors.condition = '请选择成色'
+    if (!form.category) {
+      errors.category = '请输入商品分类'
+    }
+    if (form.price <= 0) {
+      errors.price = '价格应大于 0'
+    }
+    if (!form.condition) {
+      errors.condition = '请选择商品成色'
+    }
   }
 
   if (publishType.value === 'lostFound') {
-    if (!form.lostFoundType) errors.lostFoundType = '请选择信息类型'
-    if (!form.itemName) errors.itemName = '请输入物品名称'
-    if (!form.eventTime) errors.eventTime = '请选择发生时间'
+    if (!form.itemName) {
+      errors.itemName = '请输入物品名称'
+    }
+    if (!form.eventTime) {
+      errors.eventTime = '请选择发生时间'
+    }
   }
 
   if (publishType.value === 'groupBuy') {
-    if (!form.groupType) errors.groupType = '请输入拼单类型'
-    if (form.targetCount < 2) errors.targetCount = '目标人数至少为2人'
-    if (!form.deadline) errors.deadline = '请选择截止时间'
+    if (!form.groupType) {
+      errors.groupType = '请输入拼单类型'
+    }
+    if (form.targetCount < 2) {
+      errors.targetCount = '目标人数不能少于 2 人'
+    }
+    if (!form.deadline) {
+      errors.deadline = '请选择截止时间'
+    }
   }
 
   if (publishType.value === 'errand') {
-    if (!form.taskType) errors.taskType = '请输入任务类型'
-    if (form.reward === 0) errors.reward = '请输入酬劳'
-    if (!form.from) errors.from = '请输入取件地点'
-    if (!form.to) errors.to = '请输入送达地点'
-    if (!form.deadline) errors.deadline = '请选择截止时间'
+    if (!form.taskType) {
+      errors.taskType = '请输入任务类型'
+    }
+    if (form.reward < 0) {
+      errors.reward = '酬劳不能为负数'
+    }
+    if (!form.from) {
+      errors.from = '请输入取件地点'
+    }
+    if (!form.to) {
+      errors.to = '请输入送达地点'
+    }
+    if (!form.deadline) {
+      errors.deadline = '请选择截止时间'
+    }
   }
 
-  return Object.keys(errors).length === 0
+  return Object.values(errors).every((message) => !message)
 }
 
 async function handleSubmit() {
