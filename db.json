@@ -116,6 +116,19 @@
       "status": "open",
       "description": "这是一个测试商品",
       "id": 9
+    },
+    {
+      "title": "检测商品",
+      "category": "检测",
+      "price": 100,
+      "condition": "全新",
+      "location": "检测地点",
+      "publisher": "检测用户",
+      "publishTime": "2026-06-30 12:00",
+      "image": "",
+      "status": "open",
+      "description": "检测",
+      "id": 10
     }
   ],
   "lostFounds": [
@@ -327,6 +340,18 @@
       "status": "open",
       "description": "测试",
       "id": 9
+    },
+    {
+      "title": "拼单买爱奇艺会员",
+      "type": "会员拼单",
+      "targetCount": 2,
+      "currentCount": 1,
+      "deadline": "2026-06-30T15:46",
+      "location": "学校",
+      "publisher": "当前用户",
+      "status": "open",
+      "description": "喜欢爱奇艺的可入，速速",
+      "id": 10
     }
   ],
   "errands": [

@@ -18,6 +18,16 @@
         <template #footer>
           <span>{{ item.currentCount }}/{{ item.targetCount }} 人</span>
           <span class="deadline">截止 {{ item.deadline }}</span>
+
+          <button class="favorite-btn" @click="favoriteStore.toggleFavorite({
+            id: item.id,
+            type: 'groupBuy',
+            title: item.title,
+            description: item.description,
+            location: item.location
+          })">
+            {{ favoriteStore.isFavorite('groupBuy', item.id) ? '已收藏' : '收藏' }}
+          </button>
         </template>
       </ItemCard>
     </div>
@@ -34,6 +44,9 @@ import { onMounted, ref } from 'vue'
 import ItemCard from '../components/ItemCard.vue'
 import EmptyState from '../components/EmptyState.vue'
 import { getGroupBuys, type GroupBuyItem } from '../api/groupBuy'
+import { useFavoriteStore } from '../stores/favorite'
+
+const favoriteStore = useFavoriteStore()
 
 const groupBuys = ref<GroupBuyItem[]>([])
 const loading = ref(true)
@@ -79,5 +92,15 @@ onMounted(async () => {
 .deadline {
   margin-left: 12px;
   color: #6b7280;
+}
+
+.favorite-btn {
+  margin-left: auto;
+  border: none;
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+  background: #f3f4f6;
+  color: #374151;
 }
 </style>
