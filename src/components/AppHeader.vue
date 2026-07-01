@@ -40,11 +40,15 @@
         </button>
         <button class="user-btn">
           <img
-            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face"
+            v-if="userStore.currentUser.avatar"
+            :src="userStore.currentUser.avatar"
             alt="用户头像"
             class="user-avatar"
           />
-          <span class="user-name">张同学</span>
+          <div v-else class="user-avatar-placeholder">
+            {{ userStore.displayName.charAt(0) }}
+          </div>
+          <span class="user-name">{{ userStore.displayName }}</span>
         </button>
       </div>
     </div>
@@ -54,6 +58,9 @@
 <script setup lang="ts">
 import AppNav from './AppNav.vue'
 import { Search, Bell } from '@lucide/vue'
+import { useUserStore } from '../stores/user'
+
+const userStore = useUserStore()
 </script>
 
 <style scoped>
@@ -241,6 +248,19 @@ import { Search, Bell } from '@lucide/vue'
   height: 32px;
   border-radius: var(--radius-full);
   object-fit: cover;
+}
+
+.user-avatar-placeholder {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
 }
 
 .user-name {
